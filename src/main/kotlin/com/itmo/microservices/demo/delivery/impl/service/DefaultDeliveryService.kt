@@ -34,7 +34,7 @@ class DefaultDeliveryService(private val deliveryRepository: DeliveryRepository,
     override fun getDeliveryInfo(deliveryId: UUID): DeliveryModel? = deliveryRepository.findByIdOrNull(deliveryId)?.toModel() ?:
     throw NotFoundException("Delivery with id : $deliveryId not found")
 
-    override fun allDeliveries(): List<DeliveryModel> = deliveryRepository.findAll()
+    override fun allDeliveries(user: UserDetails): List<DeliveryModel> = deliveryRepository.findAllByUser(user.username)
         .map { it.toModel() }
 
     override fun deleteDelivery(deliveryId: UUID) {

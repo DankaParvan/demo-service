@@ -52,7 +52,7 @@ class DeliveryController(private val deliveryService: DeliveryService) {
         ],
         security = [SecurityRequirement(name = "bearerAuth")]
     )
-    fun allDeliveries(): List<DeliveryModel> = deliveryService.allDeliveries()
+    fun allDeliveries(@Parameter(hidden = true) @AuthenticationPrincipal user: UserDetails): List<DeliveryModel> = deliveryService.allDeliveries(user)
 
     @DeleteMapping("/{deliveryId}")
     @Operation(
