@@ -28,9 +28,10 @@ class DeliveryController(private val deliveryService: DeliveryService) {
         security = [SecurityRequirement(name = "bearerAuth")]
     )
     fun doDelivery(@RequestBody request: DeliveryModel,
-                   @Parameter(hidden = true) @AuthenticationPrincipal user: UserDetails) = deliveryService.doDelivery(request, user)
+                   @Parameter(hidden = true) @AuthenticationPrincipal user: UserDetails)
+                        = deliveryService.doDelivery(request, user)
 
-    @GetMapping("/{deliveryId}")
+    @GetMapping("/{deliveryId}") //ToDo user verify
     @Operation(
         summary = "Get delivery info by ID",
         responses = [
@@ -52,9 +53,10 @@ class DeliveryController(private val deliveryService: DeliveryService) {
         ],
         security = [SecurityRequirement(name = "bearerAuth")]
     )
-    fun allDeliveries(@Parameter(hidden = true) @AuthenticationPrincipal user: UserDetails): List<DeliveryModel> = deliveryService.allDeliveries(user)
+    fun allDeliveries(@Parameter(hidden = true) @AuthenticationPrincipal user: UserDetails)
+        = deliveryService.allDeliveries(user)
 
-    @DeleteMapping("/{deliveryId}")
+    @DeleteMapping("/{deliveryId}") //ToDo user verify
     @Operation(
         summary = "Delete delivery by ID",
         responses = [
