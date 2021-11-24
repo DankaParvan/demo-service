@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="1" author="Cropus">
+        <createTable tableName="orders">
+            <column name="order_id" type="java.util.UUID" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="time_created" type="java.util.Date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="java.lang.String">
+                <constraints nullable="false"/>
+            </column>
+            <column name="delivery_info" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="Cropus">
+        <createTable tableName="order_items">
+            <column name="order_item_id" type="java.util.UUID" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="catalog_item_id" type="java.util.UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="java.lang.Integer">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+</databaseChangeLog>

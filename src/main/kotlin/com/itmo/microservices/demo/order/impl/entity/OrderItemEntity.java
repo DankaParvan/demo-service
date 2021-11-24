@@ -3,9 +3,7 @@ package com.itmo.microservices.demo.order.impl.entity;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -14,11 +12,15 @@ import java.util.UUID;
 @Setter
 @ToString
 @NoArgsConstructor
+@Table(name = "order_items")
 public class OrderItemEntity extends AbstractEntity {
     @Id
     @GeneratedValue
+    @Column(name = "order_item_id")
     private UUID uuid;
+    @Column(name = "catalog_item_id")
     private UUID catalogItemId;
+    @Column(name = "amount")
     private Integer amount;
 
     public OrderItemEntity(UUID catalogItemId, Integer amount) {

@@ -25,6 +25,8 @@
              
         <buildnumber-maven-plugin.version>1.4</buildnumber-maven-plugin.version>
         <jib-maven-plugin.version>2.8.0</jib-maven-plugin.version>
+
+        <liquibase.propertyFile>${project.basedir}/src/main/resources/application.yml</liquibase.propertyFile>
     </properties>
          
     <dependencies>
@@ -167,6 +169,10 @@
             <artifactId>logback-core</artifactId>
             <version>1.2.6</version>
         </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
     </dependencies>
 
     <scm>
@@ -297,6 +303,15 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>3.6.2</version>
+                <configuration>
+                    <propertyFile>${liquibase.propertyFile}</propertyFile>
+                    <changeLogFile>${project.basedir}/src/main/resources/db/changeLog.xml</changeLogFile>
+                </configuration>
             </plugin>
         </plugins>
     </build>

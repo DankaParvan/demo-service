@@ -2,7 +2,7 @@ spring:
   application:
     name: p09
   datasource:
-    url: jdbc:postgresql://postgresql:5432/demo_db
+    url: jdbc:postgresql://postgresql:5432/p09
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -10,6 +10,8 @@ spring:
     database: postgresql
     hibernate:
       ddl-auto: update
+  liquibase:
+    change-log: db/changeLog.xml
 
 server:
   error:
