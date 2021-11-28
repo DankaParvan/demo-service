@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class WarehouseApi implements IWarehouseApi {
-    private static final String API_URL_PREFIX = "http://localhost:8080/api/warehouse";
+    private static final String API_URL_PREFIX = "http://localhost:8080/items";
 
     @Override
     public BookingResponse bookOrder(OrderDto orderDto) {
