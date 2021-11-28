@@ -2,6 +2,7 @@ package com.itmo.microservices.demo.warehouse.impl.entity
 
 import java.util.UUID
 import com.fasterxml.jackson.annotation.JsonBackReference
+import com.itmo.microservices.demo.warehouse.api.model.CatalogItemDto
 import javax.persistence.*
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
@@ -28,7 +29,8 @@ class CatalogItem {
     @field:Min(value = 1, message = "Price must be greater than 0")
     var price = 100
 
-    constructor() {}
+    constructor() {
+    }
 
     constructor(
         id: UUID?,
@@ -48,5 +50,16 @@ class CatalogItem {
         this.title = title
         this.description = description
         this.price = price
+    }
+
+    fun toDto(): CatalogItemDto {
+        val dto: CatalogItemDto = CatalogItemDto(
+            id!!,
+            title!!,
+            description!!,
+            price,
+            warehouseItem?.amount!! - warehouseItem?.booked!!)
+
+        return dto;
     }
 }
