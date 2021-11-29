@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="1" author="p09">
+        <sqlFile dbms="postgresql"
+                 encoding="utf8"
+                 endDelimiter="\nENTER"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"
+                 path="01_users.sql"/>
+        <rollback>
+            <sqlFile dbms="postgresql"
+                     encoding="utf8"
+                     endDelimiter="\nENTER"
+                     relativeToChangelogFile="true"
+                     splitStatements="true"
+                     stripComments="true"
+                     path="01_users_drop.sql"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2" author="p09">
+        <sqlFile dbms="postgresql"
+                 encoding="utf8"
+                 endDelimiter="\nENTER"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"
+                 path="02_orders.sql"/>
+        <rollback>
+            <sqlFile dbms="postgresql"
+                     encoding="utf8"
+                     endDelimiter="\nENTER"
+                     relativeToChangelogFile="true"
+                     splitStatements="true"
+                     stripComments="true"
+                     path="02_orders_drop.sql"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="3" author="p09">
+        <sqlFile dbms="postgresql"
+                 encoding="utf8"
+                 endDelimiter="\nENTER"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"
+                 path="03_warehouse.sql"/>
+        <rollback>
+            <sqlFile dbms="postgresql"
+                     encoding="utf8"
+                     endDelimiter="\nENTER"
+                     relativeToChangelogFile="true"
+                     splitStatements="true"
+                     stripComments="true"
+                     path="03_warehouse_drop.sql"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="4" author="p09">
+        <sqlFile dbms="postgresql"
+                 encoding="utf8"
+                 endDelimiter="\nENTER"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"
+                 path="04_delivery.sql"/>
+        <rollback>
+            <sqlFile dbms="postgresql"
+                     encoding="utf8"
+                     endDelimiter="\nENTER"
+                     relativeToChangelogFile="true"
+                     splitStatements="true"
+                     stripComments="true"
+                     path="04_delivery_drop.sql"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="5" author="p09">
+        <sqlFile dbms="postgresql"
+                 encoding="utf8"
+                 endDelimiter="\nENTER"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"
+                 path="05_payment.sql"/>
+        <rollback>
+            <sqlFile dbms="postgresql"
+                     encoding="utf8"
+                     endDelimiter="\nENTER"
+                     relativeToChangelogFile="true"
+                     splitStatements="true"
+                     stripComments="true"
+                     path="05_payment_drop.sql"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="6" author="p09">
+        <sqlFile dbms="postgresql"
+                 encoding="utf8"
+                 endDelimiter="\nENTER"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"
+                 path="06_log.sql"/>
+        <rollback>
+            <sqlFile dbms="postgresql"
+                     encoding="utf8"
+                     endDelimiter="\nENTER"
+                     relativeToChangelogFile="true"
+                     splitStatements="true"
+                     stripComments="true"
+                     path="06_log_drop.sql"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

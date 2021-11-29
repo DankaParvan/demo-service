@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS catalog_items
+ENTER
+
+DROP TABLE IF EXISTS warehouse_items
+ENTER
