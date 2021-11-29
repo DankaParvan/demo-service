@@ -15,10 +15,9 @@ import java.util.*
 
 
 @RestController
-@RequestMapping("/users")
 class UserController(private val userService: IUserService) {
 
-    @PostMapping
+    @PostMapping("/users")
     @Operation(
         summary = "Register new user",
         responses = [
@@ -31,7 +30,7 @@ class UserController(private val userService: IUserService) {
         return userService.addUser(request.toModel())
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     @Operation(
         summary = "Get user by id",
         responses = [
