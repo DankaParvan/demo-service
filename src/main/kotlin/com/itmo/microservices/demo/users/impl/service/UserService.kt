@@ -8,6 +8,8 @@ import com.itmo.microservices.demo.users.api.service.IUserService
 import com.itmo.microservices.demo.users.impl.entity.User
 import com.itmo.microservices.demo.users.impl.logging.UserServiceNotableEvents
 import com.itmo.microservices.demo.users.impl.repository.UserRepository
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -24,13 +26,19 @@ class UserService(
     @InjectEventLogger
     private lateinit var eventLogger: EventLogger
 
-    private fun findUser(name: String) = userRepository.findUserByName(name).toModel()
+    private fun findUser(name: String) = userRepository.findUserByName(name)?.toModel()
 
-    override fun addUser(userModel: UserModel): UserResponseDto {
-        val user = userRepository.save(userModel.toEntity())
-        eventLogger.info(UserServiceNotableEvents.I_USER_CREATED, user.name)
+    override fun addUser(userModel: UserModel): ResponseEntity<UserResponseDto> {
+        val user = userRepository.findUserByName(userModel.name)
 
-        return UserResponseDto(UUID.fromString(user.id), user.name)
+        return if (user != null ) {
+            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        } else {
+            val savedUser = userRepository.save(userModel.toEntity())
+            eventLogger.info(UserServiceNotableEvents.I_USER_CREATED, userModel.name)
+
+            ResponseEntity(UserResponseDto(UUID.fromString(savedUser.id), savedUser.name), HttpStatus.OK)
+        }
     }
 
     override fun getUserById(id: UUID): UserResponseDto? {
@@ -46,7 +54,7 @@ class UserService(
     override fun authUser(request: AuthenticationRequest): AuthenticationResult {
         val user = findUser(request.username)
 
-        if (request.password != user.password)
+        if (request.password != user?.password)
             throw AccessDeniedException("Invalid password")
 
         val accessToken = tokenManager.generateToken(user.userDetails())
