@@ -157,7 +157,7 @@ class OrderControllerTest {
 
     private String createItemAndReturnId() throws Exception {
         CatalogItemModel item = new CatalogItemModel("title", "description", 100);
-        JSONObject result = sendPostRequestWithContent("/api/warehouse/addItem", item);
+        JSONObject result = sendPostRequestWithContent("/items/add", item);
 
         return result.getString("message");
     }

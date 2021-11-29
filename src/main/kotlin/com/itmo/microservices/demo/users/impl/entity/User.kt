@@ -6,6 +6,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
+@Table(name = "users")
 data class User(
     @Id
     var id: String,
