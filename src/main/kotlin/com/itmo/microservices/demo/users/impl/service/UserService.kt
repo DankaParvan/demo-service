@@ -52,7 +52,7 @@ class UserService(
     }
 
     override fun authUser(request: AuthenticationRequest): AuthenticationResult {
-        val user = findUser(request.username)
+        val user = findUser(request.name)
 
         if (request.password != user?.password)
             throw AccessDeniedException("Invalid password")
