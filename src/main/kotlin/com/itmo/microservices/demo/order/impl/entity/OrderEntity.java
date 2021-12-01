@@ -23,11 +23,15 @@ import java.util.UUID;
 public class OrderEntity extends AbstractEntity {
     @Id
     @GeneratedValue
+    @Column(name = "order_id")
     private UUID uuid;
 
+    @Column(name = "time_created")
     private LocalDateTime timeCreated;
+    @Column(name = "status")
     private OrderStatus status = OrderStatus.COLLECTING;
 
+    @Column(name = "delivery_info")
     private Timestamp deliveryInfo;
     @OneToMany
     @ToString.Exclude

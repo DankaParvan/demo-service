@@ -87,7 +87,7 @@ public class OrderController {
             security = {@SecurityRequirement(name = "bearerAuth")})
     public ResponseEntity<BookingDto> selectDeliveryTime(@PathVariable("orderId") UUID orderId,
                                                          @RequestParam(name = "slot") int seconds) {
-        var booking = service.selectDeliveryTime(orderId, seconds);
+        BookingDto booking = service.selectDeliveryTime(orderId, seconds);
         return new ResponseEntity<>(booking, booking == null ? HttpStatus.BAD_REQUEST : HttpStatus.OK);
     }
 }
