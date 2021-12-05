@@ -1,9 +1,10 @@
 package com.itmo.microservices.demo.order.impl.service;
 
-import com.itmo.microservices.demo.order.api.BookingException;
+import com.itmo.microservices.demo.order.api.exception.BookingException;
 import com.itmo.microservices.demo.order.api.dto.BookingDto;
 import com.itmo.microservices.demo.order.api.dto.OrderDto;
 import com.itmo.microservices.demo.order.api.dto.OrderStatus;
+import com.itmo.microservices.demo.order.api.exception.OrderIsNotExistException;
 import com.itmo.microservices.demo.order.api.service.IOrderService;
 import com.itmo.microservices.demo.order.impl.dao.OrderItemRepository;
 import com.itmo.microservices.demo.order.impl.dao.OrderRepository;
@@ -15,6 +16,7 @@ import com.itmo.microservices.demo.order.util.mapping.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -40,12 +42,10 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public OrderDto getOrderById(UUID uuid) {
-        try {
-            return orderMapper.toDto(orderRepository.getById(uuid));
-        } catch (javax.persistence.EntityNotFoundException e) {
-            return null;
-        }
+    public OrderDto getOrderById(UUID uuid) throws OrderIsNotExistException {
+        var order = orderMapper.toDto(orderRepository.getById(uuid));
+        if (order == null) throw new OrderIsNotExistException("Order is not exist");
+        return order;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.itmo.microservices.demo.order.api;
+package com.itmo.microservices.demo.order.api.exception;
 
 public class BookingException extends Exception {
     public BookingException(String message) {

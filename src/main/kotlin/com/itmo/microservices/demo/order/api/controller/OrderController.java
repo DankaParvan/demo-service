@@ -2,6 +2,7 @@ package com.itmo.microservices.demo.order.api.controller;
 
 import com.itmo.microservices.demo.order.api.dto.BookingDto;
 import com.itmo.microservices.demo.order.api.dto.OrderDto;
+import com.itmo.microservices.demo.order.api.exception.OrderIsNotExistException;
 import com.itmo.microservices.demo.order.impl.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -40,12 +41,25 @@ public class OrderController {
             summary = "Get order",
             responses = {
                     @ApiResponse(description = "OK", responseCode = "200", content = {@Content}),
+                    @ApiResponse(description = "Order not Found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Something went wrong", responseCode = "400", content = {@Content})},
             security = {@SecurityRequirement(name = "bearerAuth")})
     public ResponseEntity<OrderDto> getOrder(@PathVariable("orderId") UUID uuid) {
-        OrderDto order = service.getOrderById(uuid);
-        return new ResponseEntity<>(order, order == null ? HttpStatus.BAD_REQUEST : HttpStatus.OK);
+        OrderDto order;
+        try {
+            order = service.getOrderById(uuid);
+        }
+        catch (OrderIsNotExistException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(order, HttpStatus.OK);
     }
+
+
 
     @PutMapping("/{orderId}/items/{itemId}?amount={amount}")
     @Operation(
