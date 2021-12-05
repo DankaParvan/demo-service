@@ -1,22 +1,21 @@
 package com.itmo.microservices.demo.payment.impl.entity
 
 import com.itmo.microservices.demo.payment.api.model.PaymentStatus
+import com.itmo.microservices.demo.users.api.model.Status
+import java.util.*
 import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
 import javax.persistence.Id
 
 @Entity
-class Payment {
+data class Payment(
     @Id
-    var id: Int? = null
+    var id: String,
+    var status: PaymentStatus,
+    var orderId: String,
+) {
+    constructor() : this(UUID.randomUUID().toString(), PaymentStatus.SUCCESS, "")
 
-    var status: PaymentStatus? = null
-    var orderId: Int? = null
-
-    constructor()
-
-    constructor(id: Int?, status: PaymentStatus?, orderId: Int?) {
-        this.id = id
-        this.status = status
-        this.orderId = orderId
-    }
+    constructor(status: PaymentStatus, orderId: UUID) : this(UUID.randomUUID().toString(), status, orderId.toString())
 }

@@ -1,3 +1,9 @@
 package com.itmo.microservices.demo.payment.api.model
 
-data class PaymentSubmissionDto(val timestamp: Long, val transactionId: Int)
+import java.util.*
+
+data class PaymentSubmissionDto(
+    val timestamp: Long,
+    val transactionId: UUID,
+    val totalSum: Int
+)

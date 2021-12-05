@@ -7,28 +7,30 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import java.util.*
 
 
 @RestController
-@RequestMapping("/users")
 class UserController(private val userService: IUserService) {
 
-    @PostMapping
+    @PostMapping("/users")
     @Operation(
         summary = "Register new user",
         responses = [
             ApiResponse(description = "OK", responseCode = "200"),
-            ApiResponse(description = "Bad request", responseCode = "400", content = [Content()])
+            ApiResponse(description = "Bad request", responseCode = "400", content = [Content()]),
+            ApiResponse(description = "User already exists", responseCode = "500")
         ]
     )
-    fun addUser(@RequestBody request: UserRequestDto): UserResponseDto {
+    fun addUser(@RequestBody request: UserRequestDto): ResponseEntity<UserResponseDto> {
         return userService.addUser(request.toModel())
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     @Operation(
         summary = "Get user by id",
         responses = [
@@ -37,10 +39,10 @@ class UserController(private val userService: IUserService) {
         ],
         security = [SecurityRequirement(name = "bearerAuth")]
     )
-    fun getUserById(@PathVariable(value = "id") id: Int) = userService.getUserById(id)
+    fun getUserById(@PathVariable(value = "id") id: String) = userService.getUserById(UUID.fromString(id))
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "user not found")
 
-    @PostMapping("/auth")
+    @PostMapping("/authentication")
     @Operation(
         summary = "Authenticate",
         responses = [
@@ -53,7 +55,7 @@ class UserController(private val userService: IUserService) {
        return userService.authUser(request)
     }
 
-    @PostMapping("/refresh")
+    @PostMapping("/auth/refresh")
     @Operation(
         summary = "Refresh authentication",
         responses = [

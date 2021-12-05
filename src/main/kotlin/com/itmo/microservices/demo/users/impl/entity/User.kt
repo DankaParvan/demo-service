@@ -1,23 +1,24 @@
 package com.itmo.microservices.demo.users.impl.entity
 
 import com.itmo.microservices.demo.users.api.model.Status
+import org.hibernate.annotations.GenericGenerator
+import java.util.*
 import javax.persistence.*
 
 @Entity
 @Table(name = "users")
-class User {
+data class User(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    var id: Int? = null
-    var name: String? = null
-    var password: String? = null
-    var status: Status? = null
+    var id: String,
+    var name: String,
+    var password: String,
+    var status: Status,
+) {
+    constructor() : this(UUID.randomUUID().toString(), "", "", Status.OFFLINE)
 
-    constructor()
-
-    constructor(name: String?, password: String?, status: Status?) {
-        this.name = name
-        this.password = password
-        this.status = status
-    }
+    constructor(
+        name: String,
+        password: String,
+        status: Status,
+    ) : this(UUID.randomUUID().toString(), name, password, status)
 }

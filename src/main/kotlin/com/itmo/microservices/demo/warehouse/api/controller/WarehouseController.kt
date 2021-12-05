@@ -2,7 +2,7 @@ package com.itmo.microservices.demo.warehouse.api.controller
 
 import com.itmo.microservices.demo.warehouse.api.exception.ItemIsNotExistException
 import com.itmo.microservices.demo.warehouse.api.exception.ItemQuantityException
-import com.itmo.microservices.demo.warehouse.api.model.CatalogItemModel
+import com.itmo.microservices.demo.warehouse.api.model.CatalogItemDto
 import com.itmo.microservices.demo.warehouse.impl.service.WarehouseService
 import com.itmo.microservices.demo.warehouse.api.model.ItemQuantityRequestDTO
 import com.itmo.microservices.demo.warehouse.api.model.ItemResponseDTO
@@ -18,10 +18,11 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import java.util.*
 import javax.validation.Valid
+import kotlin.collections.ArrayList
 
 @Validated
 @RestController
-@RequestMapping("/api/warehouse")
+@RequestMapping("/items")
 @Transactional
 class WarehouseController(private val service: WarehouseService) {
 
@@ -83,7 +84,7 @@ class WarehouseController(private val service: WarehouseService) {
         return ResponseEntity(ItemResponseDTO(200, "Request executed successfully"), HttpStatus.OK)
     }
 
-    @PutMapping(
+    @PostMapping(
         value = ["/book"],
         consumes = ["application/json"],
         produces = ["application/json"]
@@ -146,7 +147,7 @@ class WarehouseController(private val service: WarehouseService) {
     }
 
     @PostMapping(
-        value = ["/addItem"],
+        value = ["/add"],
         consumes = ["application/json"],
         produces = ["application/json"]
     )
@@ -154,43 +155,48 @@ class WarehouseController(private val service: WarehouseService) {
         summary = "Execute a request to add new item",
         security = [SecurityRequirement(name = "bearerAuth")]
     )
-    fun addItem(@Valid @RequestBody item: CatalogItemModel): ResponseEntity<ItemResponseDTO> {
+    fun addItem(@Valid @RequestBody item: CatalogItem): ResponseEntity<ItemResponseDTO> {
         try {
-            service.addItem(CatalogItem(item.description, item.title, item.price))
+            service.addItem(item)
         }
         catch (e: Exception) {
             return ResponseEntity(ItemResponseDTO(400, e.message!!), HttpStatus.BAD_REQUEST)
         }
 
-        return ResponseEntity(ItemResponseDTO(200, "Request executed successfully"), HttpStatus.OK)
+        return ResponseEntity(ItemResponseDTO(200, item.id.toString()), HttpStatus.OK)
     }
 
-    @GetMapping("/getItems")
+    @GetMapping
     @Operation(
         summary = "Get a list of all added items",
         security = [SecurityRequirement(name = "bearerAuth")]
     )
-    fun getItems(): ResponseEntity<List<CatalogItem?>> {
-        val list: List<CatalogItem?>
+    fun getItems(@RequestParam("available") available: Boolean?): ResponseEntity<List<CatalogItemDto?>> {
+        val list: ArrayList<CatalogItemDto?> = ArrayList()
         try {
-            list = service.getItems()
+            for (item in service.getItems()){
+
+                if (item != null) {
+                    list.add(item.toDto())
+                }
+            }
         }
         catch (e: Exception) {
             return ResponseEntity(null, HttpStatus.BAD_REQUEST)
         }
 
-        return ResponseEntity(list, HttpStatus.OK)
+        return ResponseEntity(list.toList(), HttpStatus.OK)
     }
 
-    @GetMapping("/getItem")
+    @GetMapping("/get")
     @Operation(
         summary = "Get a item by id",
         security = [SecurityRequirement(name = "bearerAuth")]
     )
-    fun getItem(@RequestParam("id") id: UUID?): ResponseEntity<CatalogItem> {
-        val item: CatalogItem
+    fun getItem(@RequestParam("id") id: UUID?): ResponseEntity<CatalogItemDto> {
+        val item: CatalogItemDto
         try {
-            item = service.getItem(id)
+            item = service.getItem(id).toDto()
         }
         catch (e: ItemIsNotExistException) {
             return ResponseEntity(null, HttpStatus.NOT_FOUND)
@@ -202,7 +208,7 @@ class WarehouseController(private val service: WarehouseService) {
         return ResponseEntity(item, HttpStatus.OK)
     }
 
-    @GetMapping(value = ["/getItemQuantity"])
+    @GetMapping(value = ["/quantity"])
     @Operation(
         summary = "Get a item quantity by id",
         security = [SecurityRequirement(name = "bearerAuth")]
@@ -224,7 +230,7 @@ class WarehouseController(private val service: WarehouseService) {
     }
 
 
-    @GetMapping(value = ["/getItemsQuantity"])
+    @GetMapping(value = ["/get/quantity"])
     @Operation(
         summary = "Get a items quantity by array of id",
         security = [SecurityRequirement(name = "bearerAuth")]
@@ -242,6 +248,29 @@ class WarehouseController(private val service: WarehouseService) {
         }
         catch (e: Exception) {
             return ResponseEntity(null, HttpStatus.BAD_REQUEST)
+        }
+
+        return ResponseEntity(itemModels, HttpStatus.OK)
+    }
+    
+    @PostMapping(value = ["/compare"])
+    @Operation(
+        summary = "Compare a items quantity by array of id",
+        security = [SecurityRequirement(name = "bearerAuth")]
+    )
+    fun compareItemsQuantity(@Valid @RequestBody objects: List<ItemQuantityRequestDTO>): ResponseEntity<List<ItemQuantityRequestDTO>> {
+        val itemModels: ArrayList<ItemQuantityRequestDTO> = ArrayList()
+        try {
+            for (obj in objects){
+                val item: WarehouseItem = service.getItemQuantity(obj.id)
+                itemModels.add(ItemQuantityRequestDTO(obj.id, item.amount!! - item.booked!! - obj.amount));
+            }
+        }
+        catch (e: ItemIsNotExistException) {
+            return ResponseEntity( ArrayList(), HttpStatus.NOT_FOUND)
+        }
+        catch (e: Exception) {
+            return ResponseEntity( ArrayList(), HttpStatus.BAD_REQUEST)
         }
 
         return ResponseEntity(itemModels, HttpStatus.OK)

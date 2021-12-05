@@ -1,0 +1,11 @@
+DROP TABLE IF EXISTS delivery
+ENTER
+
+DROP TABLE IF EXISTS slots
+ENTER
+
+DROP TABLE IF EXISTS slots_delivery_men
+ENTER
+
+DROP TABLE IF EXISTS slots_time_slots
+ENTER

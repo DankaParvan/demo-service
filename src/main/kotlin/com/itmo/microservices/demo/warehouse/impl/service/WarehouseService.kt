@@ -88,6 +88,7 @@ class WarehouseService(
         val warehouseItem = WarehouseItem(catalogItem, 0, 0)
         eventLogger!!.info(WarehouseServiceNotableEvents.I_ITEM_CREATED, catalogItem.id)
         warehouseRepository.save(warehouseItem)
+        return
     }
 
     fun getItems(): List<CatalogItem?> {

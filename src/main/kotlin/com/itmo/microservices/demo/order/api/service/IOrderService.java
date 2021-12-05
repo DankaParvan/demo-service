@@ -1,5 +1,6 @@
 package com.itmo.microservices.demo.order.api.service;
 
+import com.itmo.microservices.demo.order.api.BookingException;
 import com.itmo.microservices.demo.order.api.dto.BookingDto;
 import com.itmo.microservices.demo.order.api.dto.OrderDto;
 import com.itmo.microservices.demo.order.api.exception.OrderIsNotExistException;
@@ -16,9 +17,7 @@ public interface IOrderService {
 
     boolean startPayment(UUID orderId);
 
-    boolean finalizePayment(UUID orderId);
-
-    BookingDto book(UUID orderId) throws IOException;
+    BookingDto bookOrder(UUID orderId) throws BookingException;
 
     BookingDto selectDeliveryTime(UUID orderId, int seconds) throws IOException;
 }

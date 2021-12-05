@@ -1,17 +1,20 @@
 package com.itmo.microservices.demo.order.api.dto;
 
 import lombok.*;
-import org.springframework.context.annotation.Lazy;
 
 import java.util.UUID;
 
 @Builder
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-@Lazy
 public class OrderItemDto extends AbstractDto {
-    private UUID uuid;
-    private UUID catalogItemId;
-    private Integer amount;
+    public UUID uuid;
+    public UUID catalogItemId;
+    public Integer amount;
+
+    public OrderItemDto(UUID uuid, UUID catalogItemId, Integer amount) {
+        this.uuid = uuid;
+        this.catalogItemId = catalogItemId;
+        this.amount = amount;
+    }
 }

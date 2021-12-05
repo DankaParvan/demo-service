@@ -2,7 +2,6 @@ package com.itmo.microservices.demo.order.util.mapping;
 
 import com.itmo.microservices.demo.order.api.dto.AbstractDto;
 import com.itmo.microservices.demo.order.impl.entity.AbstractEntity;
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,29 +31,5 @@ public abstract class AbstractMapper<E extends AbstractEntity, D extends Abstrac
         return Objects.isNull(entity)
                 ? null
                 : mapper.map(entity, dtoClass);
-    }
-
-    Converter<E, D> toDtoConverter() {
-        return context -> {
-            E source = context.getSource();
-            D destination = context.getDestination();
-            mapSpecificFields(source, destination);
-            return context.getDestination();
-        };
-    }
-
-    Converter<D, E> toEntityConverter() {
-        return context -> {
-            D source = context.getSource();
-            E destination = context.getDestination();
-            mapSpecificFields(source, destination);
-            return context.getDestination();
-        };
-    }
-
-    void mapSpecificFields(E source, D destination) {
-    }
-
-    void mapSpecificFields(D source, E destination) {
     }
 }
