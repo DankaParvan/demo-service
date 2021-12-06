@@ -38,7 +38,7 @@ public class OrderEntity extends AbstractEntity {
     private List<OrderItemEntity> orderItems = new ArrayList<>();
 
     public OrderEntity() {
-
+        this.timeCreated = LocalDateTime.now();
     }
 
     @Override
