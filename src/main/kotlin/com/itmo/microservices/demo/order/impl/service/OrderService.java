@@ -1,9 +1,12 @@
 package com.itmo.microservices.demo.order.impl.service;
 
-import com.itmo.microservices.demo.order.api.BookingException;
+import com.itmo.microservices.demo.order.api.exception.BookingException;
 import com.itmo.microservices.demo.order.api.dto.BookingDto;
+import com.itmo.microservices.demo.payment.api.model.PaymentSubmissionDto;
+import com.itmo.microservices.demo.warehouse.api.model.ItemResponseDTO;
 import com.itmo.microservices.demo.order.api.dto.OrderDto;
 import com.itmo.microservices.demo.order.api.dto.OrderStatus;
+import com.itmo.microservices.demo.order.api.exception.OrderIsNotExistException;
 import com.itmo.microservices.demo.order.api.service.IOrderService;
 import com.itmo.microservices.demo.order.impl.dao.OrderItemRepository;
 import com.itmo.microservices.demo.order.impl.dao.OrderRepository;
@@ -11,12 +14,16 @@ import com.itmo.microservices.demo.order.impl.entity.BookingAttemptStatus;
 import com.itmo.microservices.demo.order.impl.entity.BookingResponse;
 import com.itmo.microservices.demo.order.impl.entity.OrderEntity;
 import com.itmo.microservices.demo.order.impl.entity.OrderItemEntity;
-import com.itmo.microservices.demo.order.impl.external.PaymentApi;
-import com.itmo.microservices.demo.order.impl.external.WarehouseApi;
 import com.itmo.microservices.demo.order.util.mapping.OrderMapper;
+import com.itmo.microservices.demo.payment.api.service.PaymentService;
+import com.itmo.microservices.demo.warehouse.api.model.ItemQuantityRequestDTO;
+import com.itmo.microservices.demo.warehouse.impl.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -25,12 +32,20 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService implements IOrderService {
     private final OrderRepository orderRepository;
+    private final WarehouseService warehouseService;
+    private final PaymentService paymentService;
     private final OrderItemRepository orderItemRepository;
     private final OrderMapper orderMapper;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderItemRepository orderItemRepository, OrderMapper orderMapper) {
+    public OrderService(OrderRepository orderRepository,
+                        WarehouseService warehouseService,
+                        PaymentService paymentService,
+                        OrderItemRepository orderItemRepository,
+                        OrderMapper orderMapper) {
         this.orderRepository = orderRepository;
+        this.warehouseService = warehouseService;
+        this.paymentService = paymentService;
         this.orderItemRepository = orderItemRepository;
         this.orderMapper = orderMapper;
     }
@@ -43,25 +58,30 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public OrderDto getOrderById(UUID uuid) {
-        try {
-            return orderMapper.toDto(orderRepository.getById(uuid));
-        } catch (javax.persistence.EntityNotFoundException e) {
-            return null;
-        }
+    public OrderDto getOrderById(UUID uuid) throws OrderIsNotExistException {
+        var order = orderMapper.toDto(orderRepository.getById(uuid));
+        if (order == null) throw new OrderIsNotExistException("Order is not exist");
+        return order;
     }
 
     @Override
     public OrderDto putItemToOrder(UUID orderId, UUID itemId, int amount) {
         try {
-            var order = orderRepository.getById(orderId);
+            OrderEntity order = orderRepository.getById(orderId);
 
             if (order.getStatus() == OrderStatus.BOOKED) {
-                WarehouseApi warehouseApi = new WarehouseApi();
-                warehouseApi.unbookOrder(orderMapper.toDto(order));
+                OrderDto orderDto = orderMapper.toDto(order);
+                List<ItemQuantityRequestDTO> itemList = orderDto.getOrderItems()
+                        .stream()
+                        .map(orderItem ->
+                                new ItemQuantityRequestDTO(orderItem.getCatalogItemId(),
+                                        orderItem.getAmount()))
+                        .collect(Collectors.toList());
+                unbookLikeController(itemList);
+
                 order.setStatus(OrderStatus.COLLECTING);
             }
-            var orderItem = new OrderItemEntity(itemId, amount);
+            OrderItemEntity orderItem = new OrderItemEntity(itemId, amount);
 
             order.getOrderItems().add(orderItem);
 
@@ -75,55 +95,95 @@ public class OrderService implements IOrderService {
 
     @Override
     public BookingDto bookOrder(UUID orderId) throws BookingException {
-        try {
-            var order = orderRepository.getById(orderId);
-            if (order.getStatus() != OrderStatus.COLLECTING) {
-                return null;
-            }
-            WarehouseApi warehouseApi = new WarehouseApi();
-            BookingResponse bookingResponse = warehouseApi.bookOrder(orderMapper.toDto(order));
-
-            if (bookingResponse.getStatus() == BookingAttemptStatus.SUCCESS) {
-                order.setStatus(OrderStatus.BOOKED);
-                orderRepository.save(order);
-                return new BookingDto(orderId);
-            }
-
-            if (bookingResponse.getStatus() == BookingAttemptStatus.NO_RESPONSE) {
-                throw new BookingException("Failed to communicate with warehouse service");
-            }
-
-            return new BookingDto(orderId, order.getOrderItems().stream().map(OrderItemEntity::getCatalogItemId).collect(Collectors.toSet()));
-        } catch (javax.persistence.EntityNotFoundException e) {
+        OrderEntity order = orderRepository.getById(orderId);
+        if (order.getStatus() != OrderStatus.COLLECTING) {
             return null;
         }
+        OrderDto orderDto = orderMapper.toDto(order);
+        List<ItemQuantityRequestDTO> itemList = orderDto.getOrderItems()
+                .stream()
+                .map(orderItem ->
+                        new ItemQuantityRequestDTO(orderItem.getCatalogItemId(),
+                                orderItem.getAmount()))
+                .collect(Collectors.toList());
+        BookingResponse bookingResponse = handleResponse(bookLikeController(itemList));
+
+        if (bookingResponse.getStatus() == BookingAttemptStatus.SUCCESS) {
+            order.setStatus(OrderStatus.BOOKED);
+            orderRepository.save(order);
+            return new BookingDto(orderId);
+        }
+
+        if (bookingResponse.getStatus() == BookingAttemptStatus.NO_RESPONSE) {
+            throw new BookingException("Failed to communicate with warehouse service");
+        }
+
+        return new BookingDto(orderId, order.getOrderItems().stream().map(OrderItemEntity::getCatalogItemId).collect(Collectors.toSet()));
     }
 
     @Override
     public boolean startPayment(UUID orderId) {
-        var order = orderRepository.getById(orderId);
+        OrderEntity order = orderRepository.getById(orderId);
         if (order.getStatus() != OrderStatus.BOOKED) {
             return false;
         }
 
-        PaymentApi paymentApi = new PaymentApi();
-        paymentApi.pay(orderMapper.toDto(order));
+        PaymentSubmissionDto response = paymentService.executePayment(orderMapper.toDto(order));
 
         return true;
     }
 
     @Override
     public BookingDto selectDeliveryTime(UUID orderId, int seconds) {
-        try {
-            var order = orderRepository.getById(orderId);
+        OrderEntity order = orderRepository.getById(orderId);
 
-            if (order.getStatus() == OrderStatus.BOOKED) {
-                order.setDeliveryInfo(new Timestamp(TimeUnit.SECONDS.toMillis(seconds)));
-                orderRepository.save(order);
-            }
-        } catch (javax.persistence.EntityNotFoundException e) {
-            return null;
+        if (order.getStatus() == OrderStatus.BOOKED) {
+            order.setDeliveryInfo(new Timestamp(TimeUnit.SECONDS.toMillis(seconds)));
+            orderRepository.save(order);
         }
+
         return new BookingDto(orderId, new HashSet<>());
+    }
+
+    private ResponseEntity<ItemResponseDTO> bookLikeController (List<ItemQuantityRequestDTO> items) {
+        ResponseEntity<ItemResponseDTO> response;
+        try {
+            warehouseService.checkAllItems(items);
+            warehouseService.checkAllQuantity(items);
+
+            for (ItemQuantityRequestDTO item : items) {
+                warehouseService.book(item);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ItemResponseDTO(400, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(new ItemResponseDTO(200, "Request executed successfully"), HttpStatus.OK);
+    }
+
+    private ResponseEntity<ItemResponseDTO> unbookLikeController (List<ItemQuantityRequestDTO> items) {
+        ResponseEntity<ItemResponseDTO> response;
+        try {
+            warehouseService.checkAllItems(items);
+            warehouseService.checkAllQuantity(items);
+
+            for (ItemQuantityRequestDTO item : items) {
+                warehouseService.unbook(item);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ItemResponseDTO(400, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(new ItemResponseDTO(200, "Request executed successfully"), HttpStatus.OK);
+    }
+
+    private BookingResponse handleResponse(ResponseEntity<ItemResponseDTO> response) {
+        BookingResponse result = new BookingResponse();
+        if (response.getBody() != null && response.getBody().getStatus() == 200) {
+            result.setStatus(BookingAttemptStatus.SUCCESS);
+        } else {
+            result.setStatus(BookingAttemptStatus.FAIL);
+        }
+        return result;
     }
 }

@@ -11,7 +11,7 @@ import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper() {
-        var modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.STRICT)
                 .setFieldMatchingEnabled(true)
