@@ -95,34 +95,30 @@ public class OrderService implements IOrderService {
 
     @Override
     public BookingDto bookOrder(UUID orderId) throws BookingException {
-        try {
-            OrderEntity order = orderRepository.getById(orderId);
-            if (order.getStatus() != OrderStatus.COLLECTING) {
-                return null;
-            }
-            OrderDto orderDto = orderMapper.toDto(order);
-            List<ItemQuantityRequestDTO> itemList = orderDto.getOrderItems()
-                    .stream()
-                    .map(orderItem ->
-                            new ItemQuantityRequestDTO(orderItem.getCatalogItemId(),
-                                    orderItem.getAmount()))
-                    .collect(Collectors.toList());
-            BookingResponse bookingResponse = handleResponse(bookLikeController(itemList));
-
-            if (bookingResponse.getStatus() == BookingAttemptStatus.SUCCESS) {
-                order.setStatus(OrderStatus.BOOKED);
-                orderRepository.save(order);
-                return new BookingDto(orderId);
-            }
-
-            if (bookingResponse.getStatus() == BookingAttemptStatus.NO_RESPONSE) {
-                throw new BookingException("Failed to communicate with warehouse service");
-            }
-
-            return new BookingDto(orderId, order.getOrderItems().stream().map(OrderItemEntity::getCatalogItemId).collect(Collectors.toSet()));
-        } catch (javax.persistence.EntityNotFoundException e) {
+        OrderEntity order = orderRepository.getById(orderId);
+        if (order.getStatus() != OrderStatus.COLLECTING) {
             return null;
         }
+        OrderDto orderDto = orderMapper.toDto(order);
+        List<ItemQuantityRequestDTO> itemList = orderDto.getOrderItems()
+                .stream()
+                .map(orderItem ->
+                        new ItemQuantityRequestDTO(orderItem.getCatalogItemId(),
+                                orderItem.getAmount()))
+                .collect(Collectors.toList());
+        BookingResponse bookingResponse = handleResponse(bookLikeController(itemList));
+
+        if (bookingResponse.getStatus() == BookingAttemptStatus.SUCCESS) {
+            order.setStatus(OrderStatus.BOOKED);
+            orderRepository.save(order);
+            return new BookingDto(orderId);
+        }
+
+        if (bookingResponse.getStatus() == BookingAttemptStatus.NO_RESPONSE) {
+            throw new BookingException("Failed to communicate with warehouse service");
+        }
+
+        return new BookingDto(orderId, order.getOrderItems().stream().map(OrderItemEntity::getCatalogItemId).collect(Collectors.toSet()));
     }
 
     @Override
@@ -139,16 +135,13 @@ public class OrderService implements IOrderService {
 
     @Override
     public BookingDto selectDeliveryTime(UUID orderId, int seconds) {
-        try {
-            OrderEntity order = orderRepository.getById(orderId);
+        OrderEntity order = orderRepository.getById(orderId);
 
-            if (order.getStatus() == OrderStatus.BOOKED) {
-                order.setDeliveryInfo(new Timestamp(TimeUnit.SECONDS.toMillis(seconds)));
-                orderRepository.save(order);
-            }
-        } catch (javax.persistence.EntityNotFoundException e) {
-            return null;
+        if (order.getStatus() == OrderStatus.BOOKED) {
+            order.setDeliveryInfo(new Timestamp(TimeUnit.SECONDS.toMillis(seconds)));
+            orderRepository.save(order);
         }
+
         return new BookingDto(orderId, new HashSet<>());
     }
 

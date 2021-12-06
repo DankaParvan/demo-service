@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.UUID;
 
 @RestController
@@ -42,6 +43,7 @@ public class OrderController {
             summary = "Get order",
             responses = {
                     @ApiResponse(description = "OK", responseCode = "200", content = {@Content}),
+                    @ApiResponse(description = "Order not found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Something went wrong", responseCode = "400", content = {@Content})},
             security = {@SecurityRequirement(name = "bearerAuth")})
     public ResponseEntity<OrderDto> getOrder(@PathVariable("orderId") UUID uuid) {
@@ -77,16 +79,24 @@ public class OrderController {
             summary = "Book",
             responses = {
                     @ApiResponse(description = "OK", responseCode = "200", content = {@Content}),
+                    @ApiResponse(description = "Order not found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Something went wrong", responseCode = "400", content = {@Content})},
             security = {@SecurityRequirement(name = "bearerAuth")})
     public ResponseEntity<BookingDto> bookOrder(@PathVariable("orderId") UUID orderId) {
         BookingDto booking;
         try {
             booking = service.bookOrder(orderId);
-        } catch (BookingException e) {
+        }
+        catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        catch (BookingException e) {
             return new ResponseEntity<>(null, HttpStatus.REQUEST_TIMEOUT);
         }
-        return new ResponseEntity<>(booking, booking == null ? HttpStatus.BAD_REQUEST : HttpStatus.OK);
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(booking, HttpStatus.OK);
     }
 
     @PostMapping("/{orderId}/delivery")
@@ -94,11 +104,22 @@ public class OrderController {
             summary = "Delivery time selection",
             responses = {
                     @ApiResponse(description = "OK", responseCode = "200", content = {@Content}),
+                    @ApiResponse(description = "Order not found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Something went wrong", responseCode = "400", content = {@Content})},
             security = {@SecurityRequirement(name = "bearerAuth")})
     public ResponseEntity<BookingDto> selectDeliveryTime(@PathVariable("orderId") UUID orderId,
                                                          @RequestParam(name = "slot") int seconds) {
-        BookingDto booking = service.selectDeliveryTime(orderId, seconds);
-        return new ResponseEntity<>(booking, booking == null ? HttpStatus.BAD_REQUEST : HttpStatus.OK);
+        BookingDto booking;
+        try {
+            booking = service.selectDeliveryTime(orderId, seconds);
+        }
+        catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(booking, HttpStatus.OK);
     }
 }
