@@ -1,12 +1,9 @@
 package com.itmo.microservices.demo.payment.api.controller
 
 import com.itmo.microservices.demo.order.api.dto.OrderDto
-import com.itmo.microservices.demo.order.api.dto.OrderItemDto
 import com.itmo.microservices.demo.order.impl.service.OrderService
 import com.itmo.microservices.demo.payment.api.model.PaymentSubmissionDto
-import com.itmo.microservices.demo.payment.api.model.UserAccountFinancialLogRecordDto
 import com.itmo.microservices.demo.payment.impl.service.PaymentServiceImpl
-import com.itmo.microservices.demo.warehouse.impl.service.WarehouseService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
