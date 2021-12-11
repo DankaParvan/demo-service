@@ -91,6 +91,10 @@ class WarehouseService(
         return
     }
 
+    fun setItemAmount(itemId: UUID, amount: Int) {
+        warehouseRepository.updateAmountById(itemId, amount)
+    }
+
     fun getItems(): List<CatalogItem?> {
         return catalogRepository.findAll()
     }

@@ -166,6 +166,16 @@ class WarehouseController(private val service: WarehouseService) {
         return ResponseEntity(ItemResponseDTO(200, item.id.toString()), HttpStatus.OK)
     }
 
+
+    @PostMapping
+    @Operation(
+        summary = "Setting item's amount",
+        security = [SecurityRequirement(name = "bearerAuth")]
+    )
+    fun setItemAmount(@RequestParam("id") itemId: UUID, @RequestParam("amount") amount: Int) {
+        service.setItemAmount(itemId, amount)
+    }
+
     @GetMapping
     @Operation(
         summary = "Get a list of all added items",
