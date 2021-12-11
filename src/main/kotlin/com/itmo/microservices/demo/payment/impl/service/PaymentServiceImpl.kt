@@ -4,6 +4,8 @@ import com.itmo.microservices.demo.order.api.dto.OrderDto
 import com.itmo.microservices.demo.order.impl.dao.OrderRepository
 import com.itmo.microservices.demo.order.impl.entity.OrderEntity
 import com.itmo.microservices.demo.order.impl.service.OrderService
+import com.itmo.microservices.demo.payment.api.event.TransactionPaymentTrigger
+import com.itmo.microservices.demo.payment.api.event.TransactionRequestedEvent
 import com.itmo.microservices.demo.payment.api.model.*
 import com.itmo.microservices.demo.payment.api.service.PaymentService
 import com.itmo.microservices.demo.payment.impl.entity.FinancialLogRecordEntity
@@ -13,15 +15,22 @@ import com.itmo.microservices.demo.payment.impl.repository.PaymentRepository
 import com.itmo.microservices.demo.warehouse.impl.repository.CatalogItemRepository
 import com.itmo.microservices.demo.warehouse.impl.repository.WarehouseItemRepository
 import org.springframework.stereotype.Service
+import java.net.HttpURLConnection
+import java.net.URI
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
 import java.util.*
+import kotlin.io.path.Path
 
 @Service
 class PaymentServiceImpl(
     private val paymentRepository: PaymentRepository,
     private val financialLogRecordRepository: FinancialLogRecordRepository,
     private val catalogItemRepository: CatalogItemRepository,
-    private val orderRepository: OrderRepository
-    ): PaymentService {
+    private val orderRepository: OrderRepository,
+    val transactionPaymentTrigger: TransactionPaymentTrigger
+) : PaymentService {
 
     override fun executePayment(order: OrderDto): PaymentSubmissionDto {
         val timestamp = System.currentTimeMillis()
@@ -44,6 +53,14 @@ class PaymentServiceImpl(
                 FinancialOperationType.WITHDRAW,
                 sum,
                 timestamp
+            )
+        )
+
+        transactionPaymentTrigger.onTransactionHandled(
+            TransactionRequestedEvent(
+                UUID.fromString(transactionId),
+                PaymentStatus.SUCCESS,
+                "Inform order about finishing payment"
             )
         )
 
@@ -71,6 +88,6 @@ class PaymentServiceImpl(
             )
         }
 
-        return  financialRecordsDto
+        return financialRecordsDto
     }
 }

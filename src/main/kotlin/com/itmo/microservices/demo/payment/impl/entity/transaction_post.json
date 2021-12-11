@@ -1,0 +1,23 @@
+{
+  "id": "50b53508-71a3-4b0b-946f-b0bf898fb4d8",
+  "name": "payment_first",
+  "answerMethod": "TRANSACTION",
+  "projectId": "f694719a-5530-4c3d-b07d-a66e2ad6fc90",
+  "callbackUrl": "",
+  "clientSecret": "5c40e398-e0a7-4337-9d75-66347121eb42",
+  "accountLimits": {
+    "id": "5c6197bb-54de-491a-95a5-654c17a14d0d",
+    "acceptTransactions": true,
+    "enableResponseTimeVariation": true,
+    "responseTimeLowerBound": 0,
+    "responseTimeUpperBound": 3,
+    "enableFailures": true,
+    "failureProbability": 5,
+    "enableRateLimits": false,
+    "requestsPerMinute": 0,
+    "parallelRequests": 0,
+    "enableServerErrors": true,
+    "serverErrorProbability": 2
+  },
+  "transactionCost": 5
+}

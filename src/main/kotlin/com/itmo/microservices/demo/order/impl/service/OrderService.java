@@ -1,5 +1,7 @@
 package com.itmo.microservices.demo.order.impl.service;
 
+import com.itmo.microservices.demo.order.api.event.OrderPaymentEvent;
+import com.itmo.microservices.demo.order.api.event.OrderPaymentTrigger;
 import com.itmo.microservices.demo.order.api.exception.BookingException;
 import com.itmo.microservices.demo.order.api.dto.BookingDto;
 import com.itmo.microservices.demo.payment.api.model.PaymentSubmissionDto;
@@ -23,7 +25,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -36,18 +37,21 @@ public class OrderService implements IOrderService {
     private final PaymentService paymentService;
     private final OrderItemRepository orderItemRepository;
     private final OrderMapper orderMapper;
+    private final OrderPaymentTrigger orderPaymentTrigger;
 
     @Autowired
     public OrderService(OrderRepository orderRepository,
                         WarehouseService warehouseService,
                         PaymentService paymentService,
                         OrderItemRepository orderItemRepository,
-                        OrderMapper orderMapper) {
+                        OrderMapper orderMapper,
+                        OrderPaymentTrigger orderPaymentTrigger) {
         this.orderRepository = orderRepository;
         this.warehouseService = warehouseService;
         this.paymentService = paymentService;
         this.orderItemRepository = orderItemRepository;
         this.orderMapper = orderMapper;
+        this.orderPaymentTrigger = orderPaymentTrigger;
     }
 
     @Override
@@ -123,12 +127,18 @@ public class OrderService implements IOrderService {
 
     @Override
     public boolean startPayment(UUID orderId) {
-        OrderEntity order = orderRepository.getById(orderId);
+        var order = orderMapper.toDto(orderRepository.getById(orderId));
+        order.status = OrderStatus.BOOKED;
+
         if (order.getStatus() != OrderStatus.BOOKED) {
             return false;
         }
 
-        PaymentSubmissionDto response = paymentService.executePayment(orderMapper.toDto(order));
+        orderPaymentTrigger.onOrderPaymentHandled(
+                new OrderPaymentEvent(order.getUuid(), "Ask PaymentService for payment")
+        );
+
+        PaymentSubmissionDto response = paymentService.executePayment(order);
 
         return true;
     }

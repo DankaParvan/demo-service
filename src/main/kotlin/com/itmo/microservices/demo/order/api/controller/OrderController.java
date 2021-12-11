@@ -122,4 +122,10 @@ public class OrderController {
 
         return new ResponseEntity<>(booking, HttpStatus.OK);
     }
+
+    @GetMapping("/suka")
+    @Operation(security = {@SecurityRequirement(name = "bearerAuth")})
+    public void test(@RequestParam(required = false) UUID orderId) {
+        service.startPayment(orderId);
+    }
 }
