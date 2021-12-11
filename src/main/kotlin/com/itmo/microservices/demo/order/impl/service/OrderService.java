@@ -23,7 +23,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -36,18 +35,21 @@ public class OrderService implements IOrderService {
     private final PaymentService paymentService;
     private final OrderItemRepository orderItemRepository;
     private final OrderMapper orderMapper;
+    private final OrderDiscardService discardService;
 
     @Autowired
     public OrderService(OrderRepository orderRepository,
                         WarehouseService warehouseService,
                         PaymentService paymentService,
                         OrderItemRepository orderItemRepository,
-                        OrderMapper orderMapper) {
+                        OrderMapper orderMapper,
+                        OrderDiscardService discardService) {
         this.orderRepository = orderRepository;
         this.warehouseService = warehouseService;
         this.paymentService = paymentService;
         this.orderItemRepository = orderItemRepository;
         this.orderMapper = orderMapper;
+        this.discardService = discardService;
     }
 
     @Override
@@ -110,6 +112,8 @@ public class OrderService implements IOrderService {
 
         if (bookingResponse.getStatus() == BookingAttemptStatus.SUCCESS) {
             order.setStatus(OrderStatus.BOOKED);
+            // это не работает
+//            discardService.scheduleOrderDiscard(this::discardOrder, orderId);
             orderRepository.save(order);
             return new BookingDto(orderId);
         }
@@ -161,7 +165,7 @@ public class OrderService implements IOrderService {
         return new ResponseEntity<>(new ItemResponseDTO(200, "Request executed successfully"), HttpStatus.OK);
     }
 
-    private ResponseEntity<ItemResponseDTO> unbookLikeController (List<ItemQuantityRequestDTO> items) {
+    private void unbookLikeController(List<ItemQuantityRequestDTO> items) {
         ResponseEntity<ItemResponseDTO> response;
         try {
             warehouseService.checkAllItems(items);
@@ -171,10 +175,11 @@ public class OrderService implements IOrderService {
                 warehouseService.unbook(item);
             }
         } catch (Exception e) {
-            return new ResponseEntity<>(new ItemResponseDTO(400, e.getMessage()), HttpStatus.BAD_REQUEST);
+            new ResponseEntity<>(new ItemResponseDTO(400, e.getMessage()), HttpStatus.BAD_REQUEST);
+            return;
         }
 
-        return new ResponseEntity<>(new ItemResponseDTO(200, "Request executed successfully"), HttpStatus.OK);
+        new ResponseEntity<>(new ItemResponseDTO(200, "Request executed successfully"), HttpStatus.OK);
     }
 
     private BookingResponse handleResponse(ResponseEntity<ItemResponseDTO> response) {
@@ -185,5 +190,23 @@ public class OrderService implements IOrderService {
             result.setStatus(BookingAttemptStatus.FAIL);
         }
         return result;
+    }
+
+    // а что значит DISCARD без использования внешней системы уведомлений? оставлю пока так
+    // юзкейс - если забронировали, но не успели оплатить - сбрасываем в статус коллектинг
+    // при этом отменяем бронирование на складе
+    public void discardOrder(UUID orderId) {
+        OrderEntity order = orderRepository.getById(orderId);
+        if (order.getStatus() == OrderStatus.BOOKED) {
+            order.setStatus(OrderStatus.COLLECTING);
+            orderRepository.save(order);
+            List<ItemQuantityRequestDTO> itemList = order.getOrderItems()
+                    .stream()
+                    .map(orderItem ->
+                            new ItemQuantityRequestDTO(orderItem.getCatalogItemId(),
+                                    orderItem.getAmount()))
+                    .collect(Collectors.toList());
+            unbookLikeController(itemList);
+        }
     }
 }
