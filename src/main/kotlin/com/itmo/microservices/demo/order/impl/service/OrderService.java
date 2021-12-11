@@ -3,6 +3,7 @@ package com.itmo.microservices.demo.order.impl.service;
 import com.itmo.microservices.demo.order.api.exception.BookingException;
 import com.itmo.microservices.demo.order.api.dto.BookingDto;
 import com.itmo.microservices.demo.payment.api.model.PaymentSubmissionDto;
+import com.itmo.microservices.demo.warehouse.api.model.CatalogItemDto;
 import com.itmo.microservices.demo.warehouse.api.model.ItemResponseDTO;
 import com.itmo.microservices.demo.order.api.dto.OrderDto;
 import com.itmo.microservices.demo.order.api.dto.OrderStatus;
@@ -17,13 +18,13 @@ import com.itmo.microservices.demo.order.impl.entity.OrderItemEntity;
 import com.itmo.microservices.demo.order.util.mapping.OrderMapper;
 import com.itmo.microservices.demo.payment.api.service.PaymentService;
 import com.itmo.microservices.demo.warehouse.api.model.ItemQuantityRequestDTO;
+import com.itmo.microservices.demo.warehouse.impl.entity.CatalogItem;
 import com.itmo.microservices.demo.warehouse.impl.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -71,17 +72,22 @@ public class OrderService implements IOrderService {
 
             if (order.getStatus() == OrderStatus.BOOKED) {
                 OrderDto orderDto = orderMapper.toDto(order);
-                List<ItemQuantityRequestDTO> itemList = orderDto.getOrderItems()
+                List<ItemQuantityRequestDTO> itemList = orderDto.getItemsMap().entrySet()
                         .stream()
                         .map(orderItem ->
-                                new ItemQuantityRequestDTO(orderItem.getCatalogItemId(),
-                                        orderItem.getAmount()))
+                                new ItemQuantityRequestDTO(orderItem.getKey(),
+                                        orderItem.getValue()))
                         .collect(Collectors.toList());
                 unbookLikeController(itemList);
 
                 order.setStatus(OrderStatus.COLLECTING);
             }
-            OrderItemEntity orderItem = new OrderItemEntity(itemId, amount);
+            CatalogItemDto catalogItemDto = warehouseService.getItem(itemId).toDto();
+            OrderItemEntity orderItem = new OrderItemEntity(
+                    itemId,
+                    catalogItemDto.getTitle(),
+                    catalogItemDto.getPrice()
+            );
 
             order.getOrderItems().add(orderItem);
 
@@ -100,11 +106,11 @@ public class OrderService implements IOrderService {
             return null;
         }
         OrderDto orderDto = orderMapper.toDto(order);
-        List<ItemQuantityRequestDTO> itemList = orderDto.getOrderItems()
+        List<ItemQuantityRequestDTO> itemList = orderDto.getItemsMap().entrySet()
                 .stream()
                 .map(orderItem ->
-                        new ItemQuantityRequestDTO(orderItem.getCatalogItemId(),
-                                orderItem.getAmount()))
+                        new ItemQuantityRequestDTO(orderItem.getKey(),
+                                orderItem.getValue()))
                 .collect(Collectors.toList());
         BookingResponse bookingResponse = handleResponse(bookLikeController(itemList));
 
@@ -118,7 +124,7 @@ public class OrderService implements IOrderService {
             throw new BookingException("Failed to communicate with warehouse service");
         }
 
-        return new BookingDto(orderId, order.getOrderItems().stream().map(OrderItemEntity::getCatalogItemId).collect(Collectors.toSet()));
+        return new BookingDto(orderId, order.getOrderItems().stream().map(OrderItemEntity::getUuid).collect(Collectors.toSet()));
     }
 
     @Override
@@ -138,7 +144,7 @@ public class OrderService implements IOrderService {
         OrderEntity order = orderRepository.getById(orderId);
 
         if (order.getStatus() == OrderStatus.BOOKED) {
-            order.setDeliveryInfo(new Timestamp(TimeUnit.SECONDS.toMillis(seconds)));
+            order.setDeliveryDuration(seconds);
             orderRepository.save(order);
         }
 

@@ -2,8 +2,6 @@ package com.itmo.microservices.demo.payment.impl.service
 
 import com.itmo.microservices.demo.order.api.dto.OrderDto
 import com.itmo.microservices.demo.order.impl.dao.OrderRepository
-import com.itmo.microservices.demo.order.impl.entity.OrderEntity
-import com.itmo.microservices.demo.order.impl.service.OrderService
 import com.itmo.microservices.demo.payment.api.model.*
 import com.itmo.microservices.demo.payment.api.service.PaymentService
 import com.itmo.microservices.demo.payment.impl.entity.FinancialLogRecordEntity
@@ -11,7 +9,6 @@ import com.itmo.microservices.demo.payment.impl.entity.Payment
 import com.itmo.microservices.demo.payment.impl.repository.FinancialLogRecordRepository
 import com.itmo.microservices.demo.payment.impl.repository.PaymentRepository
 import com.itmo.microservices.demo.warehouse.impl.repository.CatalogItemRepository
-import com.itmo.microservices.demo.warehouse.impl.repository.WarehouseItemRepository
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -29,9 +26,9 @@ class PaymentServiceImpl(
         val transactionId = paymentRepository.save(payment).id
 
         var sum = 0
-        order.orderItems.forEach { orderItemDto ->
-            catalogItemRepository.findCatalogItemById(orderItemDto.catalogItemId)?.let {
-                sum += it.price * orderItemDto.amount
+        order.itemsMap.forEach { orderItemDto ->
+            catalogItemRepository.findCatalogItemById(orderItemDto.key)?.let {
+                sum += it.price * orderItemDto.value
             }
         }
 

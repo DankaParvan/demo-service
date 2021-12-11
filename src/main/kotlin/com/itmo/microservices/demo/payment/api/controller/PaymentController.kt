@@ -35,14 +35,15 @@ class PaymentController(
         @PathVariable orderId: UUID,
     ): PaymentSubmissionDto {
         val order = orderService.getOrderById(orderId)
-        val orderItems = order.orderItems
+        val orderItems = order.itemsMap
         return paymentService.executePayment(
             OrderDto(
                 orderId,
                 order.timeCreated,
-                orderItems,
                 order.status,
-                order.deliveryInfo
+                orderItems,
+                order.deliveryDuration,
+                order.paymentHistory
             )
         )
     }

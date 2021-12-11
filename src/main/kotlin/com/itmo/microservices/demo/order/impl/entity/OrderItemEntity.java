@@ -18,14 +18,15 @@ public class OrderItemEntity extends AbstractEntity {
     @GeneratedValue
     @Column(name = "uuid")
     private UUID uuid;
-    @Column(name = "catalog_item_id")
-    private UUID catalogItemId;
-    @Column(name = "amount")
-    private Integer amount;
+    @Column(name = "title")
+    private String title;
+    @Column(name = "price")
+    private Integer price;
 
-    public OrderItemEntity(UUID catalogItemId, Integer amount) {
-        this.catalogItemId = catalogItemId;
-        this.amount = amount;
+    public OrderItemEntity(UUID catalogItemId, String title, Integer price) {
+        this.uuid = catalogItemId;
+        this.title = title;
+        this.price = price;
     }
 
     @Override

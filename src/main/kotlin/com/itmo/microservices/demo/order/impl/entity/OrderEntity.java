@@ -1,6 +1,7 @@
 package com.itmo.microservices.demo.order.impl.entity;
 
 import com.itmo.microservices.demo.order.api.dto.OrderStatus;
+import com.itmo.microservices.demo.payment.api.model.PaymentLogRecordDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,10 +10,7 @@ import org.hibernate.Hibernate;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 
 @Entity
@@ -27,12 +25,12 @@ public class OrderEntity extends AbstractEntity {
     private UUID uuid;
 
     @Column(name = "time_created")
-    private long timeCreated;
+    private Long timeCreated;
     @Column(name = "status")
     private OrderStatus status = OrderStatus.COLLECTING;
 
     @Column(name = "delivery_info")
-    private Timestamp deliveryInfo;
+    private Integer deliveryDuration;
     @OneToMany
     @ToString.Exclude
     private List<OrderItemEntity> orderItems = new ArrayList<>();
