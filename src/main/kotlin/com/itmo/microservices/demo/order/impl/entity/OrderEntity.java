@@ -23,7 +23,7 @@ import java.util.UUID;
 public class OrderEntity extends AbstractEntity {
     @Id
     @GeneratedValue
-    @Column(name = "order_id")
+    @Column(name = "uuid")
     private UUID uuid;
 
     @Column(name = "time_created")

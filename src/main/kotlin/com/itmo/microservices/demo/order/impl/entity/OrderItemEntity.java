@@ -12,11 +12,11 @@ import java.util.UUID;
 @Setter
 @ToString
 @NoArgsConstructor
-@Table(name = "order_items")
+@Table(name = "order_item_entity")
 public class OrderItemEntity extends AbstractEntity {
     @Id
     @GeneratedValue
-    @Column(name = "order_item_id")
+    @Column(name = "uuid")
     private UUID uuid;
     @Column(name = "catalog_item_id")
     private UUID catalogItemId;
