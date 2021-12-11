@@ -14,12 +14,12 @@ import java.util.UUID;
 @NoArgsConstructor
 public class OrderDto extends AbstractDto {
     public UUID uuid;
-    public LocalDateTime timeCreated;
+    public long timeCreated;
     public List<OrderItemDto> orderItems;
     public OrderStatus status;
     public Timestamp deliveryInfo;
 
-    public OrderDto(UUID uuid, LocalDateTime timeCreated, List<OrderItemDto> orderItems, OrderStatus status, Timestamp deliveryInfo) {
+    public OrderDto(UUID uuid, long timeCreated, List<OrderItemDto> orderItems, OrderStatus status, Timestamp deliveryInfo) {
         this.uuid = uuid;
         this.timeCreated = timeCreated;
         this.orderItems = orderItems;

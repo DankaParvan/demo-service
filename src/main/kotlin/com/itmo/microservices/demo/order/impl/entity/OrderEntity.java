@@ -27,7 +27,7 @@ public class OrderEntity extends AbstractEntity {
     private UUID uuid;
 
     @Column(name = "time_created")
-    private LocalDateTime timeCreated;
+    private long timeCreated;
     @Column(name = "status")
     private OrderStatus status = OrderStatus.COLLECTING;
 
@@ -38,7 +38,7 @@ public class OrderEntity extends AbstractEntity {
     private List<OrderItemEntity> orderItems = new ArrayList<>();
 
     public OrderEntity() {
-        this.timeCreated = LocalDateTime.now();
+        this.timeCreated = System.currentTimeMillis();
     }
 
     @Override
