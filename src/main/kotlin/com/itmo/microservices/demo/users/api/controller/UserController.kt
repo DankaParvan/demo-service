@@ -55,7 +55,7 @@ class UserController(private val userService: IUserService) {
        return userService.authUser(request)
     }
 
-    @PostMapping("/auth/refresh")
+    @PostMapping("/authentication/refresh")
     @Operation(
         summary = "Refresh authentication",
         responses = [
