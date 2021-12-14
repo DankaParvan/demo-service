@@ -2,11 +2,8 @@ package com.itmo.microservices.demo.warehouse.api.controller
 
 import com.itmo.microservices.demo.warehouse.api.exception.ItemIsNotExistException
 import com.itmo.microservices.demo.warehouse.api.exception.ItemQuantityException
-import com.itmo.microservices.demo.warehouse.api.model.CatalogItemDto
+import com.itmo.microservices.demo.warehouse.api.model.*
 import com.itmo.microservices.demo.warehouse.impl.service.WarehouseService
-import com.itmo.microservices.demo.warehouse.api.model.ItemQuantityRequestDTO
-import com.itmo.microservices.demo.warehouse.api.model.ItemResponseDTO
-import com.itmo.microservices.demo.warehouse.api.model.WarehouseItemDTO
 import org.springframework.http.ResponseEntity
 import com.itmo.microservices.demo.warehouse.impl.entity.CatalogItem
 import com.itmo.microservices.demo.warehouse.impl.entity.WarehouseItem
@@ -155,7 +152,7 @@ class WarehouseController(private val service: WarehouseService) {
         summary = "Execute a request to add new item",
         security = [SecurityRequirement(name = "bearerAuth")]
     )
-    fun addItem(@Valid @RequestBody item: CatalogItem): ResponseEntity<ItemResponseDTO> {
+    fun addItem(@Valid @RequestBody item: CatalogItemRequest): ResponseEntity<ItemResponseDTO> {
         try {
             service.addItem(item)
         }
@@ -163,7 +160,7 @@ class WarehouseController(private val service: WarehouseService) {
             return ResponseEntity(ItemResponseDTO(400, e.message!!), HttpStatus.BAD_REQUEST)
         }
 
-        return ResponseEntity(ItemResponseDTO(200, item.id.toString()), HttpStatus.OK)
+        return ResponseEntity(ItemResponseDTO(200, "vladiSLAVE"), HttpStatus.OK)
     }
 
 

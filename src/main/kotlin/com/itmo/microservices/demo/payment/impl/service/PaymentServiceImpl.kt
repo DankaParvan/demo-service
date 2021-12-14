@@ -2,8 +2,6 @@ package com.itmo.microservices.demo.payment.impl.service
 
 import com.itmo.microservices.demo.order.api.dto.OrderDto
 import com.itmo.microservices.demo.order.impl.dao.OrderRepository
-import com.itmo.microservices.demo.order.impl.entity.OrderEntity
-import com.itmo.microservices.demo.order.impl.service.OrderService
 import com.itmo.microservices.demo.payment.api.event.TransactionPaymentTrigger
 import com.itmo.microservices.demo.payment.api.event.TransactionRequestedEvent
 import com.itmo.microservices.demo.payment.api.model.*
@@ -13,15 +11,9 @@ import com.itmo.microservices.demo.payment.impl.entity.Payment
 import com.itmo.microservices.demo.payment.impl.repository.FinancialLogRecordRepository
 import com.itmo.microservices.demo.payment.impl.repository.PaymentRepository
 import com.itmo.microservices.demo.warehouse.impl.repository.CatalogItemRepository
-import com.itmo.microservices.demo.warehouse.impl.repository.WarehouseItemRepository
+import org.hibernate.Hibernate
 import org.springframework.stereotype.Service
-import java.net.HttpURLConnection
-import java.net.URI
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
 import java.util.*
-import kotlin.io.path.Path
 
 @Service
 class PaymentServiceImpl(
@@ -34,21 +26,19 @@ class PaymentServiceImpl(
 
     override fun executePayment(order: OrderDto): PaymentSubmissionDto {
         val timestamp = System.currentTimeMillis()
-        val payment = Payment(PaymentStatus.SUCCESS, order.uuid)
+        val payment = Payment(PaymentStatus.SUCCESS, order.id)
         val transactionId = paymentRepository.save(payment).id
 
         var sum = 0
-        order.orderItems.forEach { orderItemDto ->
-            catalogItemRepository.findCatalogItemById(orderItemDto.catalogItemId)?.let {
-                sum += it.price * orderItemDto.amount
+        order.itemsMap.forEach { orderItemDto ->
+            catalogItemRepository.findCatalogItemById(orderItemDto.key)?.let {
+                sum += it.price * orderItemDto.value
             }
         }
 
-        orderRepository.deleteById(order.uuid)
-
         financialLogRecordRepository.save(
             FinancialLogRecordEntity(
-                order.uuid,
+                order.id,
                 UUID.fromString(transactionId),
                 FinancialOperationType.WITHDRAW,
                 sum,
@@ -66,8 +56,7 @@ class PaymentServiceImpl(
 
         return PaymentSubmissionDto(
             timestamp,
-            UUID.fromString(transactionId),
-            sum
+            UUID.fromString(transactionId)
         )
     }
 

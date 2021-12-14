@@ -5,14 +5,16 @@ import com.google.common.eventbus.Subscribe
 import com.itmo.microservices.demo.order.api.dto.OrderDto
 import com.itmo.microservices.demo.order.api.event.OrderPaymentEvent
 import com.itmo.microservices.demo.order.api.service.IOrderService
+import com.itmo.microservices.demo.order.impl.service.OrderService
 import com.itmo.microservices.demo.payment.api.service.PaymentService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import javax.annotation.PostConstruct
 
 @Service
 class OrderPaymentEventListener(
-    private val orderService: IOrderService,
+    private val orderService: OrderService,
     private val paymentService: PaymentService
 ) {
     @Autowired
@@ -26,17 +28,17 @@ class OrderPaymentEventListener(
     @Subscribe
     fun onReceiveOrderPayment(event: OrderPaymentEvent) {
         val order = orderService.getOrderById(event.orderId)
-        val orderItems = order.orderItems
 
         println(event.message)
 
         paymentService.executePayment(
             OrderDto(
-                event.orderId,
+                order.id,
                 order.timeCreated,
-                orderItems,
                 order.status,
-                order.deliveryInfo
+                order.itemsMap,
+                order.deliveryDuration,
+                order.paymentHistory
             )
         )
     }
