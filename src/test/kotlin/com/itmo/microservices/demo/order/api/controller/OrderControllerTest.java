@@ -63,7 +63,7 @@ class OrderControllerTest {
         // endregion
 
         // region assertion
-        assert orderId.equals(result.getString("uuid"));
+        assert orderId.equals(result.getString("id"));
         // endregion
     }
 
@@ -83,13 +83,11 @@ class OrderControllerTest {
         // endregion
 
         // region assertion
-        String savedItemId = result.getJSONArray("orderItems").getJSONObject(0).getString("catalogItemId");
-        assert itemId.equals(savedItemId);
+        String savedItemId = result.getJSONObject("itemsMap").getString(itemId);
+        assert "666".equals(savedItemId);
         // endregion
     }
 
-    // reason: RestTemplate, not mock (WarehouseApi.java:35)
-    @Disabled
     @Test
     void shouldBookOrder() throws Exception {
         // region init
@@ -152,7 +150,7 @@ class OrderControllerTest {
 
     private String createOrderAndReturnId() throws Exception {
         JSONObject result = sendPostRequestWithoutContent("/orders");
-        return result.getString("uuid");
+        return result.getString("id");
     }
 
     private String createItemAndReturnId() throws Exception {
