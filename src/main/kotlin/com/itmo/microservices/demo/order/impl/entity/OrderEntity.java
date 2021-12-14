@@ -31,9 +31,10 @@ public class OrderEntity extends AbstractEntity {
 
     @Column(name = "delivery_info")
     private Integer deliveryDuration;
-    @OneToMany
+
+    @ElementCollection
     @ToString.Exclude
-    private List<OrderItemEntity> orderItems = new ArrayList<>();
+    private Map<UUID, Integer> itemsMap = new HashMap<>();
 
     public OrderEntity() {
         this.timeCreated = System.currentTimeMillis();

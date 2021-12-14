@@ -3,31 +3,26 @@ package com.itmo.microservices.demo.order.impl.service;
 import com.itmo.microservices.demo.order.api.exception.BookingException;
 import com.itmo.microservices.demo.order.api.dto.BookingDto;
 import com.itmo.microservices.demo.payment.api.model.PaymentSubmissionDto;
-import com.itmo.microservices.demo.warehouse.api.model.CatalogItemDto;
+import com.itmo.microservices.demo.warehouse.api.exception.ItemIsNotExistException;
 import com.itmo.microservices.demo.warehouse.api.model.ItemResponseDTO;
 import com.itmo.microservices.demo.order.api.dto.OrderDto;
 import com.itmo.microservices.demo.order.api.dto.OrderStatus;
 import com.itmo.microservices.demo.order.api.exception.OrderIsNotExistException;
 import com.itmo.microservices.demo.order.api.service.IOrderService;
-import com.itmo.microservices.demo.order.impl.dao.OrderItemRepository;
 import com.itmo.microservices.demo.order.impl.dao.OrderRepository;
 import com.itmo.microservices.demo.order.impl.entity.BookingAttemptStatus;
 import com.itmo.microservices.demo.order.impl.entity.BookingResponse;
 import com.itmo.microservices.demo.order.impl.entity.OrderEntity;
-import com.itmo.microservices.demo.order.impl.entity.OrderItemEntity;
 import com.itmo.microservices.demo.order.util.mapping.OrderMapper;
 import com.itmo.microservices.demo.payment.api.service.PaymentService;
 import com.itmo.microservices.demo.warehouse.api.model.ItemQuantityRequestDTO;
-import com.itmo.microservices.demo.warehouse.impl.entity.CatalogItem;
 import com.itmo.microservices.demo.warehouse.impl.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,19 +30,16 @@ public class OrderService implements IOrderService {
     private final OrderRepository orderRepository;
     private final WarehouseService warehouseService;
     private final PaymentService paymentService;
-    private final OrderItemRepository orderItemRepository;
     private final OrderMapper orderMapper;
 
     @Autowired
     public OrderService(OrderRepository orderRepository,
                         WarehouseService warehouseService,
                         PaymentService paymentService,
-                        OrderItemRepository orderItemRepository,
                         OrderMapper orderMapper) {
         this.orderRepository = orderRepository;
         this.warehouseService = warehouseService;
         this.paymentService = paymentService;
-        this.orderItemRepository = orderItemRepository;
         this.orderMapper = orderMapper;
     }
 
@@ -82,16 +74,8 @@ public class OrderService implements IOrderService {
 
                 order.setStatus(OrderStatus.COLLECTING);
             }
-            CatalogItemDto catalogItemDto = warehouseService.getItem(itemId).toDto();
-            OrderItemEntity orderItem = new OrderItemEntity(
-                    itemId,
-                    catalogItemDto.getTitle(),
-                    catalogItemDto.getPrice()
-            );
+            order.getItemsMap().put(itemId, amount);
 
-            order.getOrderItems().add(orderItem);
-
-            orderItemRepository.save(orderItem);
             orderRepository.save(order);
             return orderMapper.toDto(order);
         } catch (javax.persistence.EntityNotFoundException e) {
@@ -124,7 +108,7 @@ public class OrderService implements IOrderService {
             throw new BookingException("Failed to communicate with warehouse service");
         }
 
-        return new BookingDto(orderId, order.getOrderItems().stream().map(OrderItemEntity::getUuid).collect(Collectors.toSet()));
+        return new BookingDto(orderId, order.getItemsMap().keySet());
     }
 
     @Override
@@ -151,7 +135,7 @@ public class OrderService implements IOrderService {
         return new BookingDto(orderId, new HashSet<>());
     }
 
-    private ResponseEntity<ItemResponseDTO> bookLikeController (List<ItemQuantityRequestDTO> items) {
+    private ResponseEntity<ItemResponseDTO> bookLikeController(List<ItemQuantityRequestDTO> items) {
         ResponseEntity<ItemResponseDTO> response;
         try {
             warehouseService.checkAllItems(items);
@@ -167,7 +151,7 @@ public class OrderService implements IOrderService {
         return new ResponseEntity<>(new ItemResponseDTO(200, "Request executed successfully"), HttpStatus.OK);
     }
 
-    private ResponseEntity<ItemResponseDTO> unbookLikeController (List<ItemQuantityRequestDTO> items) {
+    private ResponseEntity<ItemResponseDTO> unbookLikeController(List<ItemQuantityRequestDTO> items) {
         ResponseEntity<ItemResponseDTO> response;
         try {
             warehouseService.checkAllItems(items);
