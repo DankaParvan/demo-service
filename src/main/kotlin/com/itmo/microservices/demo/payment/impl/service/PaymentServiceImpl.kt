@@ -22,7 +22,7 @@ class PaymentServiceImpl(
 
     override fun executePayment(order: OrderDto): PaymentSubmissionDto {
         val timestamp = System.currentTimeMillis()
-        val payment = Payment(PaymentStatus.SUCCESS, order.uuid)
+        val payment = Payment(PaymentStatus.SUCCESS, order.id)
         val transactionId = paymentRepository.save(payment).id
 
         var sum = 0
@@ -32,11 +32,11 @@ class PaymentServiceImpl(
             }
         }
 
-        orderRepository.deleteById(order.uuid)
+        orderRepository.deleteById(order.id)
 
         financialLogRecordRepository.save(
             FinancialLogRecordEntity(
-                order.uuid,
+                order.id,
                 UUID.fromString(transactionId),
                 FinancialOperationType.WITHDRAW,
                 sum,

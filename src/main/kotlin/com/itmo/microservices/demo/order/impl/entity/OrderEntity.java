@@ -22,7 +22,7 @@ public class OrderEntity extends AbstractEntity {
     @Id
     @GeneratedValue
     @Column(name = "uuid")
-    private UUID uuid;
+    private UUID id;
 
     @Column(name = "time_created")
     private Long timeCreated;
@@ -45,7 +45,7 @@ public class OrderEntity extends AbstractEntity {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         OrderEntity that = (OrderEntity) o;
-        return uuid != null && Objects.equals(uuid, that.uuid);
+        return id != null && Objects.equals(id, that.id);
     }
 
     @Override
@@ -54,6 +54,6 @@ public class OrderEntity extends AbstractEntity {
     }
 
     public UUID getUuid() {
-        return uuid;
+        return id;
     }
 }

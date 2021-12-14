@@ -13,7 +13,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 public class OrderDto extends AbstractDto {
-    public UUID uuid;
+    public UUID id;
     public Long timeCreated;
     public OrderStatus status;
     public Map<UUID, Integer> itemsMap;
@@ -26,7 +26,7 @@ public class OrderDto extends AbstractDto {
                     Map<UUID, Integer> itemsMap,
                     Integer deliveryDuration,
                     List<PaymentLogRecordDto> paymentHistory) {
-        this.uuid = uuid;
+        this.id = uuid;
         this.timeCreated = timeCreated;
         this.status = status;
         this.itemsMap = itemsMap;
