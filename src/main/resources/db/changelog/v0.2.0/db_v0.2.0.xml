@@ -6,44 +6,13 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 
     <changeSet id="8" author="cropus">
-        <addColumn tableName="order_item_entity">
-            <column name="title" type="uuid">
-                <constraints nullable="false"/>
-            </column>
-            <column name="price" type="integer">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-
-    <changeSet id="9" author="cropus">
-        <sql>
-            UPDATE order_item_entity SET title = 'title';
-            UPDATE order_item_entity SET price = 20;
-        </sql>
-        <rollback>
-            UPDATE order_item_entity SET title = '';
-            UPDATE order_item_entity SET price = 20;
-        </rollback>
-    </changeSet>
-
-    <changeSet id="10" author="cropus">
-        <dropColumn tableName="order_item_entity" columnName="catalog_item_id"/>
-        <dropColumn tableName="order_item_entity" columnName="amount"/>
-        <rollback>
-            <addColumn tableName="order_item_entity">
-                <column name="catalog_item_id" type="uuid">
-                    <constraints nullable="false"/>
-                </column>
-                <column name="amount" type="integer">
-                    <constraints nullable="false"/>
-                </column>
-            </addColumn>
-            <sql>
-                UPDATE order_item_entity SET catalog_item_id = '';
-                UPDATE order_item_entity SET amount = 1;
-            </sql>
-        </rollback>
+        <sqlFile dbms="postgresql"
+                 encoding="utf8"
+                 endDelimiter="\nENTER"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"
+                 path="drop_order_item.sql"/>
     </changeSet>
 
 </databaseChangeLog>
