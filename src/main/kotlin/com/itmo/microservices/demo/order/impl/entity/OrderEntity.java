@@ -1,6 +1,7 @@
 package com.itmo.microservices.demo.order.impl.entity;
 
 import com.itmo.microservices.demo.order.api.dto.OrderStatus;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
 @Table(name = "orders")
 public class OrderEntity extends AbstractEntity {
     @Id
@@ -33,7 +35,7 @@ public class OrderEntity extends AbstractEntity {
 
     @Column(name = "delivery_info")
     private Timestamp deliveryInfo;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<OrderItemEntity> orderItems = new ArrayList<>();
 

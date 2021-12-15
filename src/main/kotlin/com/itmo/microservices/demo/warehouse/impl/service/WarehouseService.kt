@@ -6,6 +6,7 @@ import com.itmo.microservices.commonlib.annotations.InjectEventLogger
 import com.itmo.microservices.commonlib.logging.EventLogger
 import com.itmo.microservices.demo.warehouse.api.exception.ItemIsNotExistException
 import com.itmo.microservices.demo.warehouse.api.exception.ItemQuantityException
+import com.itmo.microservices.demo.warehouse.api.model.CatalogItemRequest
 import java.util.UUID
 import com.itmo.microservices.demo.warehouse.api.model.ItemQuantityRequestDTO
 import com.itmo.microservices.demo.warehouse.impl.entity.CatalogItem
@@ -83,12 +84,17 @@ class WarehouseService(
         warehouseRepository.save(item!!)
     }
 
-    fun addItem(item: CatalogItem) {
-        val catalogItem = catalogRepository.save(item)
-        val warehouseItem = WarehouseItem(catalogItem, 0, 0)
+    fun addItem(item: CatalogItemRequest) {
+        val catalogItem = CatalogItem(title = item.title, description = item.description, price = item.price)
+        val catalogItemEntity = catalogRepository.save(catalogItem)
+        val warehouseItem = WarehouseItem(catalogItemEntity, 0, 0)
         eventLogger!!.info(WarehouseServiceNotableEvents.I_ITEM_CREATED, catalogItem.id)
         warehouseRepository.save(warehouseItem)
         return
+    }
+
+    fun setItemAmount(itemId: UUID, amount: Int) {
+        warehouseRepository.updateAmountById(itemId, amount)
     }
 
     fun getItems(): List<CatalogItem?> {

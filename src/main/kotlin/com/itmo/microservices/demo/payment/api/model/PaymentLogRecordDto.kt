@@ -7,4 +7,4 @@ data class PaymentLogRecordDto(
     val paymentStatus: PaymentStatus,
     val amount: Int,
     val transactionId: UUID
-    )
+)
