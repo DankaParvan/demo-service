@@ -81,22 +81,24 @@ class DefaultDeliveryService(private val deliveryRepository: DeliveryRepository,
             throw OutOfRangeException("Cannot set delivery slots. Some of the deliveries does not on the time slots")
     }
 
-    override fun getDeliverySlots(date: String): SlotsModel {
-        val slots = slotsRepository.findByIdOrNull(date)?:
-            throw NotFoundException("Delivery slots not set")
+    override fun getDeliverySlots(date: Int): List<Int> {
+//        val slots = slotsRepository.findByIdOrNull(date)?:
+//            throw NotFoundException("Delivery slots not set")
+//
+//        val slotsMen = slots.deliveryMen
+//        val slotsTime = slots.timeSlots
+//
+//        slotsMen?.forEachIndexed { index, element ->
+//            if (slotsTime != null) {
+//                slotsMen[index] = element -
+//                        deliverySearch(date, slotsTime[index], slotsTime[index + 1])
+//            }
+//        }
+//
+//        val slotsAvailable = Slots(slots.slotsDate, slotsMen, slotsTime)
 
-        val slotsMen = slots.deliveryMen
-        val slotsTime = slots.timeSlots
-
-        slotsMen?.forEachIndexed { index, element ->
-            if (slotsTime != null) {
-                slotsMen[index] = element -
-                        deliverySearch(date, slotsTime[index], slotsTime[index + 1])
-            }
-        }
-
-        val slotsAvailable = Slots(slots.slotsDate, slotsMen, slotsTime)
-        return slotsAvailable.toModel()
+        val list = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 300)
+        return list
     }
 
     override fun allDeliveries(user: UserDetails) = deliveryRepository.findAllByUser(user.username)

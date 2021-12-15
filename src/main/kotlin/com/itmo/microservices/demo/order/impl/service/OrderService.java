@@ -162,22 +162,38 @@ public class OrderService implements IOrderService {
 
     @Override
     public BookingDto bookOrder(UUID orderId) throws BookingException {
-        OrderEntity order = orderRepository.getById(orderId);
+        OrderEntity order = orderRepository.findById(orderId).get();
+
         if (order.getStatus() != OrderStatus.COLLECTING) {
             return null;
         }
-        OrderDto orderDto = orderMapper.toDto(order);
 
-        List<ItemQuantityRequestDTO> itemList = new ArrayList<>();
+        Map<UUID, Integer> map = new HashMap<>();
+
+        List<OrderItemEntity> orderItems = order.getOrderItems();
+
+        for (OrderItemEntity orderItem : orderItems) {
+            map.put(orderItem.getCatalogItemId(), orderItem.getAmount());
+        }
+
+        OrderDto orderDto = new OrderDto(
+                orderId,
+                order.getTimeCreated().getLong(ChronoField.MILLI_OF_SECOND),
+                order.getStatus(),
+                map,
+                null,
+                Collections.emptyList());
+
+        List<ItemQuantityRequestDTO> itemQuantityRequests = new ArrayList<>();
         for (UUID key : orderDto.getItemsMap().keySet()) {
             ItemQuantityRequestDTO itemQuantityRequest = new ItemQuantityRequestDTO(
                     key,
                     orderDto.getItemsMap().get(key)
             );
-            itemList.add(itemQuantityRequest);
+            itemQuantityRequests.add(itemQuantityRequest);
         }
 
-        BookingResponse bookingResponse = handleResponse(bookLikeController(itemList));
+        BookingResponse bookingResponse = handleResponse(bookLikeController(itemQuantityRequests));
 
         if (bookingResponse.getStatus() == BookingAttemptStatus.SUCCESS) {
             order.setStatus(OrderStatus.BOOKED);

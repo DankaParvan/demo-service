@@ -10,7 +10,7 @@ import java.util.*
 
 interface DeliveryService {
     fun getDeliveryInfo(deliveryId: UUID, user: UserDetails): DeliveryModel?
-    fun getDeliverySlots(date: String): SlotsModel?
+    fun getDeliverySlots(date: Int): List<Int>
     fun setDeliverySlots(slots: Slots)
     fun doDelivery(request: DeliveryDTO, user: UserDetails)
     fun allDeliveries(user: UserDetails): List<DeliveryModel>

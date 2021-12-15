@@ -44,9 +44,9 @@ class DeliveryController(private val deliveryService: DeliveryService) {
         ],
         security = [SecurityRequirement(name = "bearerAuth")]
     )
-    fun getDeliverySlots(number: String,
-                        @Parameter(hidden = true) @AuthenticationPrincipal user: UserDetails):
-            SlotsModel? = deliveryService.getDeliverySlots(number)
+    fun getDeliverySlots(number: Int,
+                        @Parameter(hidden = true) @AuthenticationPrincipal user: UserDetails
+    ): List<Int> = deliveryService.getDeliverySlots(number)
 
     @PostMapping("/slots")
     @Operation(
