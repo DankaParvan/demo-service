@@ -22,13 +22,13 @@ import java.util.*
 import kotlin.io.path.Path
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping
 class PaymentController(
     val paymentService: PaymentServiceImpl,
     val orderService: OrderService
 ) {
 
-    @PostMapping("/{orderId}/payment")
+    @PostMapping("/orders/{orderId}/payment")
     @Operation(
         summary = "Execute Payment",
         responses = [
@@ -68,7 +68,7 @@ class PaymentController(
     fun fetchFinancialRecords(
         @Parameter(hidden = false)
         @AuthenticationPrincipal
-        @RequestParam(name = "order_id", required = false) orderId: UUID?,
+        @RequestParam(name = "orderId", required = false) orderId: UUID?,
     ) = paymentService.fetchFinancialRecords(orderId)
 
     @PostMapping("/GACHI")

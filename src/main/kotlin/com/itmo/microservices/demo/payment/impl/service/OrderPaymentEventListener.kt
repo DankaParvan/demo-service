@@ -4,12 +4,11 @@ import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.itmo.microservices.demo.order.api.dto.OrderDto
 import com.itmo.microservices.demo.order.api.event.OrderPaymentEvent
-import com.itmo.microservices.demo.order.api.service.IOrderService
 import com.itmo.microservices.demo.order.impl.service.OrderService
+import com.itmo.microservices.demo.internal.api.service.IInternalService
 import com.itmo.microservices.demo.payment.api.service.PaymentService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import javax.annotation.PostConstruct
 
 @Service

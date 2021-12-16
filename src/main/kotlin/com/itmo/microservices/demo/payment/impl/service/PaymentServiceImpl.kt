@@ -6,13 +6,13 @@ import com.itmo.microservices.demo.order.impl.dao.OrderRepository
 import com.itmo.microservices.demo.payment.api.event.TransactionPaymentTrigger
 import com.itmo.microservices.demo.payment.api.event.TransactionRequestedEvent
 import com.itmo.microservices.demo.payment.api.model.*
+import com.itmo.microservices.demo.internal.api.service.IInternalService
 import com.itmo.microservices.demo.payment.api.service.PaymentService
 import com.itmo.microservices.demo.payment.impl.entity.FinancialLogRecordEntity
 import com.itmo.microservices.demo.payment.impl.entity.Payment
 import com.itmo.microservices.demo.payment.impl.repository.FinancialLogRecordRepository
 import com.itmo.microservices.demo.payment.impl.repository.PaymentRepository
 import com.itmo.microservices.demo.warehouse.impl.repository.CatalogItemRepository
-import org.hibernate.Hibernate
 import org.springframework.stereotype.Service
 import java.net.URI
 import java.net.http.HttpClient

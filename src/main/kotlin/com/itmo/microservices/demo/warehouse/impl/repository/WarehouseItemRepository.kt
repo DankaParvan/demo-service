@@ -17,4 +17,6 @@ interface WarehouseItemRepository : JpaRepository<WarehouseItem?, UUID?> {
     @Modifying
     @Query("update WarehouseItem set amount = :amount where id = :id")
     fun updateAmountById(id: UUID, amount: Int)
+
+    fun findWarehouseItemByIdAndBookedNotLike(id: UUID, booked: Int): List<WarehouseItem>
 }

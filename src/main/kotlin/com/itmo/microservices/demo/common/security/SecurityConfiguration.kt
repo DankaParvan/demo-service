@@ -33,6 +33,7 @@ class SecurityConfiguration(
                 .antMatchers(HttpMethod.GET, "/orders/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/authentication").permitAll()
                 .antMatchers(HttpMethod.POST, "/authentication/refresh").hasAuthority("REFRESH")
+                .antMatchers(HttpMethod.POST, "/_internal/**").permitAll()
                 .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
