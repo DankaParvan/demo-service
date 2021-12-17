@@ -30,7 +30,7 @@ class UserController(private val userService: IUserService) {
         return userService.addUser(request.toModel())
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/users/{user_id}")
     @Operation(
         summary = "Get user by id",
         responses = [
@@ -39,7 +39,7 @@ class UserController(private val userService: IUserService) {
         ],
         security = [SecurityRequirement(name = "bearerAuth")]
     )
-    fun getUserById(@PathVariable(value = "id") id: String) = userService.getUserById(UUID.fromString(id))
+    fun getUserById(@PathVariable(value = "user_id") id: String) = userService.getUserById(UUID.fromString(id))
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "user not found")
 
     @PostMapping("/authentication")
