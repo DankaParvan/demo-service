@@ -44,7 +44,20 @@ class PaymentControllerTest {
         addTestUser("finlogAllTestUser", "finlogAllTestPass")
         val accessToken = getAccessToken("finlogAllTestUser", "finlogAllTestPass")
 
-        mockMvc.get("/orders/finlog") {
+        mockMvc.get("/finlog") {
+            header(HttpHeaders.AUTHORIZATION, "Bearer $accessToken")
+        }.andExpect {
+            status { isOk() }
+            content { contentType(MediaType.APPLICATION_JSON) }
+        }
+    }
+
+    @Test
+    fun finlogOneTest() {
+        val orderId = executeTestPayment("finlogOneTestUser", "finlogOneTestPass")
+        val accessToken = getAccessToken("finlogOneTestUser", "finlogOneTestPass")
+
+        mockMvc.get("/finlog?orderId=$orderId") {
             header(HttpHeaders.AUTHORIZATION, "Bearer $accessToken")
         }.andExpect {
             status { isOk() }
@@ -84,6 +97,17 @@ class PaymentControllerTest {
             header(HttpHeaders.AUTHORIZATION, "Bearer $accessToken")
         }.andReturn()
 
-        return JSONObject(result.response.contentAsString).get("uuid")
+        return JSONObject(result.response.contentAsString).get("id")
+    }
+
+    private fun executeTestPayment(name: String, password: String): Any? {
+        val orderId = addTestOrder(name, password)
+        val accessToken = getAccessToken(name, password)
+
+        mockMvc.post("/orders/$orderId/payment") {
+            header(HttpHeaders.AUTHORIZATION, "Bearer $accessToken")
+        }.andReturn()
+
+        return orderId
     }
 }
