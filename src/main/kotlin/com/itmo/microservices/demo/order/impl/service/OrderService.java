@@ -5,6 +5,7 @@ import com.itmo.microservices.demo.order.api.event.OrderPaymentTrigger;
 import com.itmo.microservices.demo.order.api.exception.BookingException;
 import com.itmo.microservices.demo.order.api.dto.BookingDto;
 import com.itmo.microservices.demo.payment.api.model.PaymentSubmissionDto;
+import com.itmo.microservices.demo.warehouse.api.exception.ItemIsNotExistException;
 import com.itmo.microservices.demo.payment.api.service.PaymentService;
 import com.itmo.microservices.demo.payment.impl.repository.FinancialLogRecordRepository;
 import com.itmo.microservices.demo.warehouse.api.model.ItemResponseDTO;
@@ -12,12 +13,10 @@ import com.itmo.microservices.demo.order.api.dto.OrderDto;
 import com.itmo.microservices.demo.order.api.dto.OrderStatus;
 import com.itmo.microservices.demo.order.api.exception.OrderIsNotExistException;
 import com.itmo.microservices.demo.order.api.service.IOrderService;
-import com.itmo.microservices.demo.order.impl.dao.OrderItemRepository;
 import com.itmo.microservices.demo.order.impl.dao.OrderRepository;
 import com.itmo.microservices.demo.order.impl.entity.BookingAttemptStatus;
 import com.itmo.microservices.demo.order.impl.entity.BookingResponse;
 import com.itmo.microservices.demo.order.impl.entity.OrderEntity;
-import com.itmo.microservices.demo.order.impl.entity.OrderItemEntity;
 import com.itmo.microservices.demo.order.util.mapping.OrderMapper;
 import com.itmo.microservices.demo.internal.api.service.IInternalService;
 import com.itmo.microservices.demo.warehouse.api.model.ItemQuantityRequestDTO;
@@ -30,7 +29,6 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.temporal.ChronoField;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,7 +37,6 @@ public class OrderService implements IOrderService {
     private final FinancialLogRecordRepository financialLogRecordRepository;
     private final WarehouseService warehouseService;
     private final PaymentService paymentService;
-    private final OrderItemRepository orderItemRepository;
     private final OrderMapper orderMapper;
     private final OrderPaymentTrigger orderPaymentTrigger;
 
@@ -48,14 +45,12 @@ public class OrderService implements IOrderService {
                         FinancialLogRecordRepository financialLogRecordRepository,
                         WarehouseService warehouseService,
                         PaymentService paymentService,
-                        OrderItemRepository orderItemRepository,
-                        OrderMapper orderMapper,
+                        OrderMapper orderMapper) {
                         OrderPaymentTrigger orderPaymentTrigger) {
         this.orderRepository = orderRepository;
         this.financialLogRecordRepository = financialLogRecordRepository;
         this.warehouseService = warehouseService;
         this.paymentService = paymentService;
-        this.orderItemRepository = orderItemRepository;
         this.orderMapper = orderMapper;
         this.orderPaymentTrigger = orderPaymentTrigger;
     }
@@ -63,94 +58,38 @@ public class OrderService implements IOrderService {
     @Override
     public OrderDto createOrder() {
         OrderEntity newOrder = new OrderEntity();
-        UUID orderId = orderRepository.save(newOrder).getUuid();
-
-//        return orderMapper.toDto(newOrder);
-
-        return new OrderDto(
-                orderId,
-                System.currentTimeMillis(),
-                newOrder.getStatus(),
-                Collections.emptyMap(),
-                null,
-                Collections.emptyList()
-        );
+        orderRepository.save(newOrder);
+        return orderMapper.toDto(newOrder);
     }
 
     @Override
     public OrderDto getOrderById(UUID uuid) throws OrderIsNotExistException {
-        var orderMapperIsAVeryBigPileOfSHIIIIIT = orderRepository.findById(uuid);
-
-        Map<UUID, Integer> map = new HashMap<>();
-
-        List<OrderItemEntity> orderItems = orderMapperIsAVeryBigPileOfSHIIIIIT.get().getOrderItems();
-
-        for (OrderItemEntity orderItem : orderItems) {
-            map.put(orderItem.getCatalogItemId(), orderItem.getAmount());
-        }
-
-        var order = new OrderDto(
-                orderMapperIsAVeryBigPileOfSHIIIIIT.get().getUuid(),
-                System.currentTimeMillis(),
-                orderMapperIsAVeryBigPileOfSHIIIIIT.get().getStatus(),
-                map,
-                null,
-                Collections.emptyList()
-        );
+        var order = orderMapper.toDto(orderRepository.getById(uuid));
+        if (order == null) throw new OrderIsNotExistException("Order is not exist");
         return order;
     }
 
     @Override
     public OrderDto putItemToOrder(UUID orderId, UUID itemId, int amount) {
         try {
-            OrderEntity order = orderRepository.findById(orderId).get();
-            order.setStatus(OrderStatus.BOOKED);
-
-            Map<UUID, Integer> map = new HashMap<>();
-
-            List<OrderItemEntity> orderItems = order.getOrderItems();
-
-            for (OrderItemEntity orderItem : orderItems) {
-                map.put(orderItem.getCatalogItemId(), orderItem.getAmount());
-            }
+            OrderEntity order = orderRepository.getById(orderId);
 
             if (order.getStatus() == OrderStatus.BOOKED) {
-                OrderDto orderDto = new OrderDto(
-                        orderId,
-                        order.getTimeCreated().getLong(ChronoField.MILLI_OF_SECOND),
-                        order.getStatus(),
-                        map,
-                        null,
-                        Collections.emptyList());
-
-                List<ItemQuantityRequestDTO> itemQuantityRequests = new ArrayList<>();
-                for (UUID key : orderDto.getItemsMap().keySet()) {
-                    ItemQuantityRequestDTO itemQuantityRequest = new ItemQuantityRequestDTO(
-                            key,
-                            orderDto.getItemsMap().get(key)
-                    );
-                    itemQuantityRequests.add(itemQuantityRequest);
-                }
-
-                unbookLikeController(itemQuantityRequests);
+                OrderDto orderDto = orderMapper.toDto(order);
+                List<ItemQuantityRequestDTO> itemList = orderDto.getItemsMap().entrySet()
+                        .stream()
+                        .map(orderItem ->
+                                new ItemQuantityRequestDTO(orderItem.getKey(),
+                                        orderItem.getValue()))
+                        .collect(Collectors.toList());
+                unbookLikeController(itemList);
 
                 order.setStatus(OrderStatus.COLLECTING);
             }
-            OrderItemEntity orderItem = new OrderItemEntity(itemId, amount);
+            order.getItemsMap().put(itemId, amount);
 
-            order.getOrderItems().add(orderItem);
-
-            orderItemRepository.save(orderItem);
             orderRepository.save(order);
-
-            return new OrderDto(
-                    orderId,
-                    order.getTimeCreated().getLong(ChronoField.MILLI_OF_SECOND),
-                    order.getStatus(),
-                    map,
-                    null,
-                    Collections.emptyList()
-            );
+            return orderMapper.toDto(order);
         } catch (javax.persistence.EntityNotFoundException e) {
             return null;
         }
@@ -158,38 +97,18 @@ public class OrderService implements IOrderService {
 
     @Override
     public BookingDto bookOrder(UUID orderId) throws BookingException {
-        OrderEntity order = orderRepository.findById(orderId).get();
-
+        OrderEntity order = orderRepository.getById(orderId);
         if (order.getStatus() != OrderStatus.COLLECTING) {
             return null;
         }
-
-        Map<UUID, Integer> map = new HashMap<>();
-
-        List<OrderItemEntity> orderItems = order.getOrderItems();
-
-        for (OrderItemEntity orderItem : orderItems) {
-            map.put(orderItem.getCatalogItemId(), orderItem.getAmount());
-        }
-
-        OrderDto orderDto = new OrderDto(
-                orderId,
-                order.getTimeCreated().getLong(ChronoField.MILLI_OF_SECOND),
-                order.getStatus(),
-                map,
-                null,
-                Collections.emptyList());
-
-        List<ItemQuantityRequestDTO> itemQuantityRequests = new ArrayList<>();
-        for (UUID key : orderDto.getItemsMap().keySet()) {
-            ItemQuantityRequestDTO itemQuantityRequest = new ItemQuantityRequestDTO(
-                    key,
-                    orderDto.getItemsMap().get(key)
-            );
-            itemQuantityRequests.add(itemQuantityRequest);
-        }
-
-        BookingResponse bookingResponse = handleResponse(bookLikeController(itemQuantityRequests));
+        OrderDto orderDto = orderMapper.toDto(order);
+        List<ItemQuantityRequestDTO> itemList = orderDto.getItemsMap().entrySet()
+                .stream()
+                .map(orderItem ->
+                        new ItemQuantityRequestDTO(orderItem.getKey(),
+                                orderItem.getValue()))
+                .collect(Collectors.toList());
+        BookingResponse bookingResponse = handleResponse(bookLikeController(itemList));
 
         if (bookingResponse.getStatus() == BookingAttemptStatus.SUCCESS) {
             order.setStatus(OrderStatus.BOOKED);
@@ -201,30 +120,12 @@ public class OrderService implements IOrderService {
             throw new BookingException("Failed to communicate with warehouse service");
         }
 
-        return new BookingDto(orderId, order.getOrderItems().stream().map(OrderItemEntity::getCatalogItemId).collect(Collectors.toSet()));
+        return new BookingDto(orderId, order.getItemsMap().keySet());
     }
 
     @Override
     public boolean startPayment(UUID orderId) {
-        var orderMapperIsAVeryBigPileOfSHIIIIIT = orderRepository.findById(orderId);
-        Map<UUID, Integer> map = new HashMap<>();
-
-        List<OrderItemEntity> orderItems = orderMapperIsAVeryBigPileOfSHIIIIIT.get().getOrderItems();
-
-        for (OrderItemEntity orderItem : orderItems) {
-            map.put(orderItem.getCatalogItemId(), orderItem.getAmount());
-        }
-
-        var order = new OrderDto(
-                orderMapperIsAVeryBigPileOfSHIIIIIT.get().getUuid(),
-                System.currentTimeMillis(),
-                orderMapperIsAVeryBigPileOfSHIIIIIT.get().getStatus(),
-                map,
-                null,
-                Collections.emptyList()
-        );
-        order.status = OrderStatus.BOOKED;
-
+        OrderEntity order = orderRepository.getById(orderId);
         if (order.getStatus() != OrderStatus.BOOKED) {
             return false;
         }
@@ -243,7 +144,7 @@ public class OrderService implements IOrderService {
         OrderEntity order = orderRepository.getById(orderId);
 
         if (order.getStatus() == OrderStatus.BOOKED) {
-            order.setDeliveryInfo(new Timestamp(TimeUnit.SECONDS.toMillis(seconds)));
+            order.setDeliveryDuration(seconds);
             orderRepository.save(order);
         }
 
