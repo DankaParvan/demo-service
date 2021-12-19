@@ -85,27 +85,11 @@ class WarehouseService(
     }
 
     fun addItem(item: CatalogItemRequest) {
-        for (i in 1..100000) {
-            val allowedChars = ('A'..'Z') + ('a'..'z')
-            val randomTitle = (1..5)
-                .map { allowedChars.random() }
-                .joinToString("")
-
-            val randomDescription = (1..8)
-                .map { allowedChars.random() }
-                .joinToString("")
-
-            val catalogItem = CatalogItem(
-                title = randomTitle,
-                description = randomDescription,
-                price = (300..300000).random()
-            )
-
-            val catalogItemEntity = catalogRepository.save(catalogItem)
-            val warehouseItem = WarehouseItem(catalogItemEntity, 1000000, 0)
-            eventLogger!!.info(WarehouseServiceNotableEvents.I_ITEM_CREATED, catalogItem.id)
-            warehouseRepository.save(warehouseItem)
-        }
+        val catalogItem = CatalogItem(title = item.title, description = item.description, price = item.price)
+        val catalogItemEntity = catalogRepository.save(catalogItem)
+        val warehouseItem = WarehouseItem(catalogItemEntity, 0, 0)
+        eventLogger!!.info(WarehouseServiceNotableEvents.I_ITEM_CREATED, catalogItem.id)
+        warehouseRepository.save(warehouseItem)
         return
     }
 
