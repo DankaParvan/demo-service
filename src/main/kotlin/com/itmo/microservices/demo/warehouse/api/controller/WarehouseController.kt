@@ -5,7 +5,6 @@ import com.itmo.microservices.demo.warehouse.api.exception.ItemQuantityException
 import com.itmo.microservices.demo.warehouse.api.model.*
 import com.itmo.microservices.demo.warehouse.impl.service.WarehouseService
 import org.springframework.http.ResponseEntity
-import com.itmo.microservices.demo.warehouse.impl.entity.CatalogItem
 import com.itmo.microservices.demo.warehouse.impl.entity.WarehouseItem
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -153,14 +152,15 @@ class WarehouseController(private val service: WarehouseService) {
         security = [SecurityRequirement(name = "bearerAuth")]
     )
     fun addItem(@Valid @RequestBody item: CatalogItemRequest): ResponseEntity<ItemResponseDTO> {
+        val itemId : UUID?
         try {
-            service.addItem(item)
+            itemId = service.addItem(item)
         }
         catch (e: Exception) {
             return ResponseEntity(ItemResponseDTO(400, e.message!!), HttpStatus.BAD_REQUEST)
         }
 
-        return ResponseEntity(ItemResponseDTO(200, "vladiSLAVE"), HttpStatus.OK)
+        return ResponseEntity(ItemResponseDTO(200, itemId.toString()), HttpStatus.OK)
     }
 
 
@@ -270,7 +270,7 @@ class WarehouseController(private val service: WarehouseService) {
         try {
             for (obj in objects){
                 val item: WarehouseItem = service.getItemQuantity(obj.id)
-                itemModels.add(ItemQuantityRequestDTO(obj.id, item.amount!! - item.booked!! - obj.amount));
+                itemModels.add(ItemQuantityRequestDTO(obj.id, item.amount!! - item.booked!! - obj.amount))
             }
         }
         catch (e: ItemIsNotExistException) {

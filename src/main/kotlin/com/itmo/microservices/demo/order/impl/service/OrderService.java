@@ -4,9 +4,6 @@ import com.itmo.microservices.demo.order.api.event.OrderPaymentEvent;
 import com.itmo.microservices.demo.order.api.event.OrderPaymentTrigger;
 import com.itmo.microservices.demo.order.api.exception.BookingException;
 import com.itmo.microservices.demo.order.api.dto.BookingDto;
-import com.itmo.microservices.demo.payment.api.model.PaymentSubmissionDto;
-import com.itmo.microservices.demo.warehouse.api.exception.ItemIsNotExistException;
-import com.itmo.microservices.demo.payment.api.service.PaymentService;
 import com.itmo.microservices.demo.payment.impl.repository.FinancialLogRecordRepository;
 import com.itmo.microservices.demo.warehouse.api.model.ItemResponseDTO;
 import com.itmo.microservices.demo.order.api.dto.OrderDto;
@@ -18,16 +15,14 @@ import com.itmo.microservices.demo.order.impl.entity.BookingAttemptStatus;
 import com.itmo.microservices.demo.order.impl.entity.BookingResponse;
 import com.itmo.microservices.demo.order.impl.entity.OrderEntity;
 import com.itmo.microservices.demo.order.util.mapping.OrderMapper;
-import com.itmo.microservices.demo.internal.api.service.IInternalService;
 import com.itmo.microservices.demo.warehouse.api.model.ItemQuantityRequestDTO;
 import com.itmo.microservices.demo.warehouse.impl.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.time.temporal.ChronoField;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,7 +31,6 @@ public class OrderService implements IOrderService {
     private final OrderRepository orderRepository;
     private final FinancialLogRecordRepository financialLogRecordRepository;
     private final WarehouseService warehouseService;
-    private final PaymentService paymentService;
     private final OrderMapper orderMapper;
     private final OrderPaymentTrigger orderPaymentTrigger;
 
@@ -44,13 +38,11 @@ public class OrderService implements IOrderService {
     public OrderService(OrderRepository orderRepository,
                         FinancialLogRecordRepository financialLogRecordRepository,
                         WarehouseService warehouseService,
-                        PaymentService paymentService,
-                        OrderMapper orderMapper) {
+                        OrderMapper orderMapper,
                         OrderPaymentTrigger orderPaymentTrigger) {
         this.orderRepository = orderRepository;
         this.financialLogRecordRepository = financialLogRecordRepository;
         this.warehouseService = warehouseService;
-        this.paymentService = paymentService;
         this.orderMapper = orderMapper;
         this.orderPaymentTrigger = orderPaymentTrigger;
     }
@@ -70,6 +62,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto putItemToOrder(UUID orderId, UUID itemId, int amount) {
         try {
             OrderEntity order = orderRepository.getById(orderId);
@@ -96,6 +89,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    @Transactional
     public BookingDto bookOrder(UUID orderId) throws BookingException {
         OrderEntity order = orderRepository.getById(orderId);
         if (order.getStatus() != OrderStatus.COLLECTING) {
@@ -134,8 +128,6 @@ public class OrderService implements IOrderService {
                 new OrderPaymentEvent(order.getId(), "Ask PaymentService for payment")
         );
 
-        PaymentSubmissionDto response = paymentService.executePayment(order);
-
         return true;
     }
 
@@ -151,8 +143,8 @@ public class OrderService implements IOrderService {
         return new BookingDto(orderId, new HashSet<>());
     }
 
-    private ResponseEntity<ItemResponseDTO> bookLikeController(List<ItemQuantityRequestDTO> items) {
-        ResponseEntity<ItemResponseDTO> response;
+    @Transactional
+    ResponseEntity<ItemResponseDTO> bookLikeController(List<ItemQuantityRequestDTO> items) {
         try {
             warehouseService.checkAllItems(items);
             warehouseService.checkAllQuantity(items);
@@ -167,8 +159,8 @@ public class OrderService implements IOrderService {
         return new ResponseEntity<>(new ItemResponseDTO(200, "Request executed successfully"), HttpStatus.OK);
     }
 
-    private ResponseEntity<ItemResponseDTO> unbookLikeController(List<ItemQuantityRequestDTO> items) {
-        ResponseEntity<ItemResponseDTO> response;
+    @Transactional
+    ResponseEntity<ItemResponseDTO> unbookLikeController(List<ItemQuantityRequestDTO> items) {
         try {
             warehouseService.checkAllItems(items);
             warehouseService.checkAllQuantity(items);
