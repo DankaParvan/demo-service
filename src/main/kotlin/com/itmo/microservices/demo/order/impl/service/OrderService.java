@@ -23,11 +23,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class OrderService implements IOrderService {
     private final OrderRepository orderRepository;
     private final FinancialLogRecordRepository financialLogRecordRepository;
@@ -110,8 +110,7 @@ public class OrderService implements IOrderService {
 
         if (bookingResponse.getStatus() == BookingAttemptStatus.SUCCESS) {
             order.setStatus(OrderStatus.BOOKED);
-            // это не работает
-//            discardService.scheduleOrderDiscard(this::discardOrder, orderId);
+            discardService.scheduleOrderDiscard(this::discardOrder, orderId);
             orderRepository.save(order);
             return new BookingDto(orderId);
         }
@@ -199,11 +198,12 @@ public class OrderService implements IOrderService {
         if (order.getStatus() == OrderStatus.BOOKED) {
             order.setStatus(OrderStatus.COLLECTING);
             orderRepository.save(order);
-            List<ItemQuantityRequestDTO> itemList = order.getOrderItems()
+
+            List<ItemQuantityRequestDTO> itemList = order.getItemsMap().entrySet()
                     .stream()
                     .map(orderItem ->
-                            new ItemQuantityRequestDTO(orderItem.getCatalogItemId(),
-                                    orderItem.getAmount()))
+                            new ItemQuantityRequestDTO(orderItem.getKey(),
+                                    orderItem.getValue()))
                     .collect(Collectors.toList());
             unbookLikeController(itemList);
         }

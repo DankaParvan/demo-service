@@ -41,7 +41,7 @@ public class OrderDiscardService {
     public void scheduleOrderDiscard(Consumer<UUID> discardCallback, UUID orderID) {
         TimerInfo timerInfo = TimerInfo.builder()
                 .totalFireCount(1)
-                .initialOffset(TimeUnit.SECONDS.toMillis(3))
+                .initialOffset(TimeUnit.SECONDS.toMillis(10))
                 .runForever(false)
                 .discardCallback(discardCallback)
                 .orderID(orderID)

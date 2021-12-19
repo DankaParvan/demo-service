@@ -26,7 +26,8 @@ public class OrderEntity extends AbstractEntity {
     @Column(name = "time_created")
     private Long timeCreated;
     @Column(name = "status")
-    private OrderStatus status = OrderStatus.COLLECTING;
+
+    private OrderStatus status;
 
     @Column(name = "delivery_info")
     private Integer deliveryDuration;
@@ -37,6 +38,7 @@ public class OrderEntity extends AbstractEntity {
 
     public OrderEntity() {
         this.timeCreated = System.currentTimeMillis();
+        this.status = OrderStatus.COLLECTING;
     }
 
     @Override

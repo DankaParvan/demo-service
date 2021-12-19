@@ -8,6 +8,9 @@ spring:
     database: h2
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
   h2:
     console:
       enabled: true
