@@ -1,41 +1,39 @@
 package com.itmo.microservices.demo.order.impl.entity;
 
 import com.itmo.microservices.demo.order.api.dto.OrderStatus;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 
 @Entity
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
 @Table(name = "orders")
 public class OrderEntity extends AbstractEntity {
     @Id
     @GeneratedValue
     @Column(name = "uuid")
-    private UUID uuid;
+    private UUID id;
 
     @Column(name = "time_created")
-    private long timeCreated;
+    private Long timeCreated;
     @Column(name = "status")
     private OrderStatus status = OrderStatus.COLLECTING;
 
     @Column(name = "delivery_info")
-    private Timestamp deliveryInfo;
-    @OneToMany
+    private Integer deliveryDuration;
+
+    @ElementCollection
     @ToString.Exclude
-    private List<OrderItemEntity> orderItems = new ArrayList<>();
+    private Map<UUID, Integer> itemsMap = new HashMap<>();
 
     public OrderEntity() {
         this.timeCreated = System.currentTimeMillis();
@@ -46,7 +44,7 @@ public class OrderEntity extends AbstractEntity {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         OrderEntity that = (OrderEntity) o;
-        return uuid != null && Objects.equals(uuid, that.uuid);
+        return id != null && Objects.equals(id, that.id);
     }
 
     @Override
@@ -55,6 +53,6 @@ public class OrderEntity extends AbstractEntity {
     }
 
     public UUID getUuid() {
-        return uuid;
+        return id;
     }
 }

@@ -1,10 +1,8 @@
 //package com.itmo.microservices.demo.payment.api
 //
 //import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-//import com.itmo.microservices.demo.payment.api.model.PaymentRequestDto
 //import com.itmo.microservices.demo.users.api.model.AuthenticationRequest
 //import com.itmo.microservices.demo.users.api.model.UserRequestDto
-//import org.hamcrest.CoreMatchers
 //import org.json.JSONObject
 //import org.junit.jupiter.api.Test
 //import org.junit.jupiter.api.extension.ExtendWith
@@ -17,6 +15,7 @@
 //import org.springframework.test.context.ActiveProfiles
 //import org.springframework.test.context.junit.jupiter.SpringExtension
 //import org.springframework.test.web.servlet.MockMvc
+//import org.springframework.test.web.servlet.get
 //import org.springframework.test.web.servlet.post
 //
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -29,38 +28,86 @@
 //
 //    @Test
 //    fun executePaymentTest() {
-//        val accessToken = getTestUserAccessToken()
-//        val paymentRequest = PaymentRequestDto(1)
+//        val orderId = addTestOrder("paymentTestUser", "PaymentTestPass")
+//        val accessToken = getAccessToken("paymentTestUser", "PaymentTestPass")
 //
-//        mockMvc.post("/payment/transaction") {
+//        mockMvc.post("/orders/$orderId/payment") {
 //            header(HttpHeaders.AUTHORIZATION, "Bearer $accessToken")
-//            contentType = MediaType.APPLICATION_JSON
-//            content = jacksonObjectMapper().writeValueAsString(paymentRequest)
-//            accept = MediaType.APPLICATION_JSON
 //        }.andExpect {
 //            status { isOk() }
 //            content { contentType(MediaType.APPLICATION_JSON) }
-//            content { jsonPath("$.transactionId", CoreMatchers.`is`(0)) }
 //        }
 //    }
 //
-//    private fun getTestUserAccessToken() : Any? {
-//        val request = UserRequestDto("testUser", "testPass")
+//    @Test
+//    fun finlogAllTest() {
+//        addTestUser("finlogAllTestUser", "finlogAllTestPass")
+//        val accessToken = getAccessToken("finlogAllTestUser", "finlogAllTestPass")
 //
-//        mockMvc.post("/users") {
+//        mockMvc.get("/finlog") {
+//            header(HttpHeaders.AUTHORIZATION, "Bearer $accessToken")
+//        }.andExpect {
+//            status { isOk() }
+//            content { contentType(MediaType.APPLICATION_JSON) }
+//        }
+//    }
+//
+//    @Test
+//    fun finlogOneTest() {
+//        val orderId = executeTestPayment("finlogOneTestUser", "finlogOneTestPass")
+//        val accessToken = getAccessToken("finlogOneTestUser", "finlogOneTestPass")
+//
+//        mockMvc.get("/finlog?orderId=$orderId") {
+//            header(HttpHeaders.AUTHORIZATION, "Bearer $accessToken")
+//        }.andExpect {
+//            status { isOk() }
+//            content { contentType(MediaType.APPLICATION_JSON) }
+//        }
+//    }
+//
+//    private fun addTestUser(name: String, password: String): Any? {
+//        val request = UserRequestDto(name, password)
+//
+//        val result = mockMvc.post("/users") {
 //            contentType = MediaType.APPLICATION_JSON
 //            content = jacksonObjectMapper().writeValueAsString(request)
 //            accept = MediaType.APPLICATION_JSON
-//        }
+//        }.andReturn()
 //
-//        val authRequest = AuthenticationRequest("testUser", "testPass")
+//        return JSONObject(result.response.contentAsString).get("id")
+//    }
 //
-//        val result = mockMvc.post("/users/auth") {
+//    private fun getAccessToken(name: String, password: String): Any? {
+//        val authRequest = AuthenticationRequest(name, password)
+//
+//        val result = mockMvc.post("/authentication") {
 //            contentType = MediaType.APPLICATION_JSON
 //            content = jacksonObjectMapper().writeValueAsString(authRequest)
 //            accept = MediaType.APPLICATION_JSON
 //        }.andReturn()
 //
 //        return JSONObject(result.response.contentAsString).get("accessToken")
+//    }
+//
+//    private fun addTestOrder(name: String, password: String): Any? {
+//        addTestUser(name, password)
+//        val accessToken = getAccessToken(name, password)
+//
+//        val result = mockMvc.post("/orders") {
+//            header(HttpHeaders.AUTHORIZATION, "Bearer $accessToken")
+//        }.andReturn()
+//
+//        return JSONObject(result.response.contentAsString).get("id")
+//    }
+//
+//    private fun executeTestPayment(name: String, password: String): Any? {
+//        val orderId = addTestOrder(name, password)
+//        val accessToken = getAccessToken(name, password)
+//
+//        mockMvc.post("/orders/$orderId/payment") {
+//            header(HttpHeaders.AUTHORIZATION, "Bearer $accessToken")
+//        }.andReturn()
+//
+//        return orderId
 //    }
 //}

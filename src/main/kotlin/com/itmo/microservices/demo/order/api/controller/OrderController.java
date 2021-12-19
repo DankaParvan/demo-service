@@ -38,7 +38,7 @@ public class OrderController {
         return service.createOrder();
     }
 
-    @GetMapping("/{orderId}")
+    @GetMapping("/{order_id}")
     @Operation(
             summary = "Get order",
             responses = {
@@ -46,7 +46,7 @@ public class OrderController {
                     @ApiResponse(description = "Order not found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Something went wrong", responseCode = "400", content = {@Content})},
             security = {@SecurityRequirement(name = "bearerAuth")})
-    public ResponseEntity<OrderDto> getOrder(@PathVariable("orderId") UUID uuid) {
+    public ResponseEntity<OrderDto> getOrder(@PathVariable("order_id") UUID uuid) {
         OrderDto order;
         try {
             order = service.getOrderById(uuid);
@@ -61,20 +61,20 @@ public class OrderController {
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-    @PutMapping("/{orderId}/items/{itemId}")
+    @PutMapping("/{order_id}/items/{item_id}")
     @Operation(
             summary = "Put the item in the cart",
             responses = {
                     @ApiResponse(description = "OK", responseCode = "200"),
                     @ApiResponse(description = "Something went wrong", responseCode = "400")},
             security = {@SecurityRequirement(name = "bearerAuth")})
-    public void updateOrder(@PathVariable("orderId") UUID orderId,
-                            @PathVariable("itemId") UUID itemId,
+    public void updateOrder(@PathVariable("order_id") UUID orderId,
+                            @PathVariable("item_id") UUID itemId,
                             @RequestParam(name = "amount") int amount) {
         service.putItemToOrder(orderId, itemId, amount);
     }
 
-    @PostMapping("/{orderId}/bookings")
+    @PostMapping("/{order_id}/bookings")
     @Operation(
             summary = "Book",
             responses = {
@@ -82,7 +82,7 @@ public class OrderController {
                     @ApiResponse(description = "Order not found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Something went wrong", responseCode = "400", content = {@Content})},
             security = {@SecurityRequirement(name = "bearerAuth")})
-    public ResponseEntity<BookingDto> bookOrder(@PathVariable("orderId") UUID orderId) {
+    public ResponseEntity<BookingDto> bookOrder(@PathVariable("order_id") UUID orderId) {
         BookingDto booking;
         try {
             booking = service.bookOrder(orderId);
@@ -99,7 +99,7 @@ public class OrderController {
         return new ResponseEntity<>(booking, HttpStatus.OK);
     }
 
-    @PostMapping("/{orderId}/delivery")
+    @PostMapping("/{order_id}/delivery")
     @Operation(
             summary = "Delivery time selection",
             responses = {
@@ -107,8 +107,8 @@ public class OrderController {
                     @ApiResponse(description = "Order not found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Something went wrong", responseCode = "400", content = {@Content})},
             security = {@SecurityRequirement(name = "bearerAuth")})
-    public ResponseEntity<BookingDto> selectDeliveryTime(@PathVariable("orderId") UUID orderId,
-                                                         @RequestParam(name = "slot") int seconds) {
+    public ResponseEntity<BookingDto> selectDeliveryTime(@PathVariable("order_id") UUID orderId,
+                                                         @RequestParam(name = "slot_in_sec") int seconds) {
         BookingDto booking;
         try {
             booking = service.selectDeliveryTime(orderId, seconds);
@@ -121,5 +121,11 @@ public class OrderController {
         }
 
         return new ResponseEntity<>(booking, HttpStatus.OK);
+    }
+
+    @GetMapping("/suka")
+    @Operation(security = {@SecurityRequirement(name = "bearerAuth")})
+    public void test(@RequestParam(required = false) UUID orderId) {
+        service.startPayment(orderId);
     }
 }

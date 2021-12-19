@@ -1,29 +1,37 @@
 package com.itmo.microservices.demo.order.api.dto;
 
+import com.itmo.microservices.demo.payment.api.model.PaymentLogRecordDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Builder
 @Getter
 @NoArgsConstructor
 public class OrderDto extends AbstractDto {
-    public UUID uuid;
-    public long timeCreated;
-    public List<OrderItemDto> orderItems;
+    public UUID id;
+    public Long timeCreated;
     public OrderStatus status;
-    public Timestamp deliveryInfo;
+    public Map<UUID, Integer> itemsMap;
+    public Integer deliveryDuration;
+    public List<PaymentLogRecordDto> paymentHistory;
 
-    public OrderDto(UUID uuid, long timeCreated, List<OrderItemDto> orderItems, OrderStatus status, Timestamp deliveryInfo) {
-        this.uuid = uuid;
+    public OrderDto(UUID uuid,
+                    Long timeCreated,
+                    OrderStatus status,
+                    Map<UUID, Integer> itemsMap,
+                    Integer deliveryDuration,
+                    List<PaymentLogRecordDto> paymentHistory) {
+        this.id = uuid;
         this.timeCreated = timeCreated;
-        this.orderItems = orderItems;
         this.status = status;
-        this.deliveryInfo = deliveryInfo;
+        this.itemsMap = itemsMap;
+        this.deliveryDuration = deliveryDuration;
+        this.paymentHistory = paymentHistory;
     }
 }
 

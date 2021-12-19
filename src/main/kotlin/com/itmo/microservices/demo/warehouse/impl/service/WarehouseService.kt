@@ -6,6 +6,7 @@ import com.itmo.microservices.commonlib.annotations.InjectEventLogger
 import com.itmo.microservices.commonlib.logging.EventLogger
 import com.itmo.microservices.demo.warehouse.api.exception.ItemIsNotExistException
 import com.itmo.microservices.demo.warehouse.api.exception.ItemQuantityException
+import com.itmo.microservices.demo.warehouse.api.model.CatalogItemRequest
 import java.util.UUID
 import com.itmo.microservices.demo.warehouse.api.model.ItemQuantityRequestDTO
 import com.itmo.microservices.demo.warehouse.impl.entity.CatalogItem
@@ -47,7 +48,7 @@ class WarehouseService(
 
     private fun getItemQuantity(id: UUID): Int {
         val item = warehouseRepository.findWarehouseItemById(id)
-        return item!!.amount!! - item.booked!!;
+        return item!!.amount!! - item.booked!!
     }
 
     private fun getItemBooked(id: UUID): Int {
@@ -78,17 +79,22 @@ class WarehouseService(
 
     fun unbook(value: ItemQuantityRequestDTO) {
         val item = warehouseRepository.findWarehouseItemById(value.id) ?: throw ItemIsNotExistException("Item with id:${value.id}, not found")
-        item.booked = item!!.booked?.minus(value.amount)
+        item.booked = item.booked?.minus(value.amount)
         eventLogger!!.info(WarehouseServiceNotableEvents.I_ITEM_QUANTITY_UPDATED, item.id)
-        warehouseRepository.save(item!!)
+        warehouseRepository.save(item)
     }
 
-    fun addItem(item: CatalogItem) {
-        val catalogItem = catalogRepository.save(item)
-        val warehouseItem = WarehouseItem(catalogItem, 0, 0)
+    fun addItem(item: CatalogItemRequest): UUID? {
+        val catalogItem = CatalogItem(title = item.title, description = item.description, price = item.price)
+        val catalogItemEntity = catalogRepository.save(catalogItem)
+        val warehouseItem = WarehouseItem(catalogItemEntity, 999999, 0)
         eventLogger!!.info(WarehouseServiceNotableEvents.I_ITEM_CREATED, catalogItem.id)
         warehouseRepository.save(warehouseItem)
-        return
+        return catalogItemEntity.id
+    }
+
+    fun setItemAmount(itemId: UUID, amount: Int) {
+        warehouseRepository.updateAmountById(itemId, amount)
     }
 
     fun getItems(): List<CatalogItem?> {

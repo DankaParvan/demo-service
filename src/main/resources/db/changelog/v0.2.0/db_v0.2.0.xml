@@ -5,17 +5,14 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 
-    <changeSet id="0" author="6093">
-        <tagDatabase tag="v0.0.0" />
+    <changeSet id="8" author="cropus">
+        <sqlFile dbms="postgresql"
+                 encoding="utf8"
+                 endDelimiter="\nENTER"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"
+                 path="drop_order_item.sql"/>
     </changeSet>
 
-    <include file="v0.1.0/db_v0.1.0.xml"  relativeToChangelogFile="true"/>
-
-    <changeSet id="7" author="6093">
-        <tagDatabase tag="v0.0.1" />
-    </changeSet>
-
-    <changeSet id="9" author="cropus">
-        <tagDatabase tag="v.0.0.2" />
-    </changeSet>
 </databaseChangeLog>

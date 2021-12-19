@@ -35,8 +35,8 @@ class OrderControllerTest {
 
     @BeforeAll
     void beforeAll() throws Exception {
-        String name = "user";
-        String password = "password";
+        String name = "orderUser";
+        String password = "orderPassword";
         registerUser(name, password);
         accessToken = "Bearer " + getAccessToken(name, password);
     }
@@ -63,7 +63,7 @@ class OrderControllerTest {
         // endregion
 
         // region assertion
-        assert orderId.equals(result.getString("uuid"));
+        assert orderId.equals(result.getString("id"));
         // endregion
     }
 
@@ -74,7 +74,7 @@ class OrderControllerTest {
         String itemId = createItemAndReturnId();
         String url = "/orders/" + orderId +
                 "/items/" + itemId +
-                "?amount=" + 666;
+                "?amount=" + 6;
         // endregion
 
         // region action
@@ -83,13 +83,11 @@ class OrderControllerTest {
         // endregion
 
         // region assertion
-        String savedItemId = result.getJSONArray("orderItems").getJSONObject(0).getString("catalogItemId");
-        assert itemId.equals(savedItemId);
+        String savedItemId = result.getJSONObject("itemsMap").getString(itemId);
+        assert "6".equals(savedItemId);
         // endregion
     }
 
-    // reason: RestTemplate, not mock (WarehouseApi.java:35)
-    @Disabled
     @Test
     void shouldBookOrder() throws Exception {
         // region init
@@ -111,7 +109,7 @@ class OrderControllerTest {
         String orderId = createOrderAndReturnId();
         String url = "/orders/" + orderId +
                 "/delivery" +
-                "?slot=" + 100;
+                "?slot_in_sec=" + 100;
         // endregion
 
         // region action
@@ -152,7 +150,7 @@ class OrderControllerTest {
 
     private String createOrderAndReturnId() throws Exception {
         JSONObject result = sendPostRequestWithoutContent("/orders");
-        return result.getString("uuid");
+        return result.getString("id");
     }
 
     private String createItemAndReturnId() throws Exception {

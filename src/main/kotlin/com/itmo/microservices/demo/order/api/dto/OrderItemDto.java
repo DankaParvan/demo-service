@@ -9,12 +9,12 @@ import java.util.UUID;
 @NoArgsConstructor
 public class OrderItemDto extends AbstractDto {
     public UUID uuid;
-    public UUID catalogItemId;
-    public Integer amount;
+    public String title;
+    public Integer price;
 
-    public OrderItemDto(UUID uuid, UUID catalogItemId, Integer amount) {
+    public OrderItemDto(UUID uuid, String title, Integer price) {
         this.uuid = uuid;
-        this.catalogItemId = catalogItemId;
-        this.amount = amount;
+        this.title = title;
+        this.price = price;
     }
 }
