@@ -8,12 +8,12 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 public class OrderItemDto extends AbstractDto {
-    public UUID id;
+    public UUID uuid;
     public String title;
     public Integer price;
 
-    public OrderItemDto(UUID id, String title, Integer price) {
-        this.id = id;
+    public OrderItemDto(UUID uuid, String title, Integer price) {
+        this.uuid = uuid;
         this.title = title;
         this.price = price;
     }

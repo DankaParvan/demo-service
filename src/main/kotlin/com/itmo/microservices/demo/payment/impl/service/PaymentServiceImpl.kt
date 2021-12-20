@@ -2,11 +2,9 @@ package com.itmo.microservices.demo.payment.impl.service
 
 import com.google.gson.Gson
 import com.itmo.microservices.demo.order.api.dto.OrderDto
-import com.itmo.microservices.demo.order.impl.dao.OrderRepository
 import com.itmo.microservices.demo.payment.api.event.TransactionPaymentTrigger
 import com.itmo.microservices.demo.payment.api.event.TransactionRequestedEvent
 import com.itmo.microservices.demo.payment.api.model.*
-import com.itmo.microservices.demo.internal.api.service.IInternalService
 import com.itmo.microservices.demo.payment.api.service.PaymentService
 import com.itmo.microservices.demo.payment.impl.entity.FinancialLogRecordEntity
 import com.itmo.microservices.demo.payment.impl.entity.Payment
@@ -25,7 +23,6 @@ class PaymentServiceImpl(
     private val paymentRepository: PaymentRepository,
     private val financialLogRecordRepository: FinancialLogRecordRepository,
     private val catalogItemRepository: CatalogItemRepository,
-    private val orderRepository: OrderRepository,
     val transactionPaymentTrigger: TransactionPaymentTrigger
 ) : PaymentService {
 

@@ -8,12 +8,7 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 
 @Entity
@@ -26,21 +21,24 @@ public class OrderEntity extends AbstractEntity {
     @Id
     @GeneratedValue
     @Column(name = "uuid")
-    private UUID uuid;
+    private UUID id;
 
     @Column(name = "time_created")
-    private LocalDateTime timeCreated;
+    private Long timeCreated;
     @Column(name = "status")
-    private OrderStatus status = OrderStatus.COLLECTING;
+
+    private OrderStatus status;
 
     @Column(name = "delivery_info")
-    private Timestamp deliveryInfo;
-    @OneToMany(fetch = FetchType.EAGER)
+    private Integer deliveryDuration;
+
+    @ElementCollection
     @ToString.Exclude
-    private List<OrderItemEntity> orderItems = new ArrayList<>();
+    private Map<UUID, Integer> itemsMap = new HashMap<>();
 
     public OrderEntity() {
-        this.timeCreated = LocalDateTime.now();
+        this.timeCreated = System.currentTimeMillis();
+        this.status = OrderStatus.COLLECTING;
     }
 
     @Override
@@ -48,7 +46,7 @@ public class OrderEntity extends AbstractEntity {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         OrderEntity that = (OrderEntity) o;
-        return uuid != null && Objects.equals(uuid, that.uuid);
+        return id != null && Objects.equals(id, that.id);
     }
 
     @Override
@@ -57,6 +55,6 @@ public class OrderEntity extends AbstractEntity {
     }
 
     public UUID getUuid() {
-        return uuid;
+        return id;
     }
 }
