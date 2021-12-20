@@ -15,7 +15,9 @@
         <tagDatabase tag="v0.0.1" />
     </changeSet>
 
-    <changeSet id="9" author="cropus">
+    <include file="v0.2.0/db_v0.2.0.xml"  relativeToChangelogFile="true"/>
+
+    <changeSet id="10" author="cropus">
         <tagDatabase tag="v.0.0.2" />
     </changeSet>
 </databaseChangeLog>
