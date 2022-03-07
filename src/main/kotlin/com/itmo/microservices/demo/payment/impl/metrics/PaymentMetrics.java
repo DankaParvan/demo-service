@@ -11,5 +11,5 @@ public interface PaymentMetrics {
             MetricType.COUNTER, new String[] {});
 
 
-    static Metric[] VALUES = new Metric[] {PAYMENT_SUM};
+    static Metric[] VALUES = new Metric[] {PAYMENT_SUM, RUN_COUNT_TIMES};
 }

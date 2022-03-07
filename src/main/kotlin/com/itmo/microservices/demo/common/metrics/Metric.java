@@ -1,5 +1,7 @@
 package com.itmo.microservices.demo.common.metrics;
 
+import java.util.Arrays;
+
 public class Metric {
     private String name;
     private String description;
@@ -30,4 +32,13 @@ public class Metric {
         return tags;
     }
 
+    @Override
+    public String toString() {
+        return "Metric{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", metricType=" + metricType +
+                ", tags=" + Arrays.toString(tags) +
+                '}';
+    }
 }
