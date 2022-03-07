@@ -31,7 +31,6 @@ class PaymentServiceImpl(
 
     init {
         metricsCollector.register(*PaymentMetrics.VALUES)
-        metricsCollector.handle(PaymentMetrics.RUN_COUNT_TIMES, 1.toDouble())
     }
 
     override fun executePayment(order: OrderDto): PaymentSubmissionDto {
@@ -89,7 +88,8 @@ class PaymentServiceImpl(
             }
         }
 
-        metricsCollector.handle(PaymentMetrics.PAYMENT_SUM, sum.toDouble())
+        metricsCollector.handle(PaymentMetrics.REVENUE, sum.toDouble())
+        metricsCollector.handle(PaymentMetrics.EXTERNAL_SYSTEM_EXPENSE, sum.toDouble())
 
         financialLogRecordRepository.save(
             FinancialLogRecordEntity(

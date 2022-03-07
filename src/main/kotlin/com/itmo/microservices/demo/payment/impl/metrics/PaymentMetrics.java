@@ -4,12 +4,18 @@ import com.itmo.microservices.demo.common.metrics.Metric;
 import com.itmo.microservices.demo.common.metrics.MetricType;
 
 public interface PaymentMetrics {
-    static Metric PAYMENT_SUM = new Metric("payment_sum", "Payment sum description",
+    static Metric REVENUE = new Metric("revenue", "Payment sum description",
             MetricType.COUNTER, new String[] {});
 
-    static Metric RUN_COUNT_TIMES = new Metric("run_count_times", "description",
-            MetricType.COUNTER, new String[] {});
+    static Metric EXTERNAL_SYSTEM_EXPENSE = new Metric("external_system_expense", "Количество денег которые были потрачены",
+            MetricType.COUNTER, new String[]{"externalSystemType"});
+
+    static Metric REFUNDED_MONEY_AMOUNT = new Metric("refunded_money_amount", "Количество денег возвращенных пользователю",
+            MetricType.COUNTER, new String[]{"refundReason"});
+
+    static Metric ORDERS_IN_STATUS = new Metric("orders_in_status", "Количество заказов в каждом статусе",
+            MetricType.GAUGE, new String[] {"status"});
 
 
-    static Metric[] VALUES = new Metric[] {PAYMENT_SUM, RUN_COUNT_TIMES};
+    static Metric[] VALUES = new Metric[] {REVENUE, EXTERNAL_SYSTEM_EXPENSE, REFUNDED_MONEY_AMOUNT, ORDERS_IN_STATUS};
 }
