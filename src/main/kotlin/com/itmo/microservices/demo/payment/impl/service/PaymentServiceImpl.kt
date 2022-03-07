@@ -1,6 +1,7 @@
 package com.itmo.microservices.demo.payment.impl.service
 
 import com.google.gson.Gson
+import com.itmo.microservices.demo.common.metrics.MetricsCollector
 import com.itmo.microservices.demo.order.api.dto.OrderDto
 import com.itmo.microservices.demo.payment.api.event.TransactionPaymentTrigger
 import com.itmo.microservices.demo.payment.api.event.TransactionRequestedEvent
@@ -8,6 +9,7 @@ import com.itmo.microservices.demo.payment.api.model.*
 import com.itmo.microservices.demo.payment.api.service.PaymentService
 import com.itmo.microservices.demo.payment.impl.entity.FinancialLogRecordEntity
 import com.itmo.microservices.demo.payment.impl.entity.Payment
+import com.itmo.microservices.demo.payment.impl.metrics.PaymentMetrics
 import com.itmo.microservices.demo.payment.impl.repository.FinancialLogRecordRepository
 import com.itmo.microservices.demo.payment.impl.repository.PaymentRepository
 import com.itmo.microservices.demo.warehouse.impl.repository.CatalogItemRepository
@@ -23,8 +25,13 @@ class PaymentServiceImpl(
     private val paymentRepository: PaymentRepository,
     private val financialLogRecordRepository: FinancialLogRecordRepository,
     private val catalogItemRepository: CatalogItemRepository,
-    val transactionPaymentTrigger: TransactionPaymentTrigger
+    private val transactionPaymentTrigger: TransactionPaymentTrigger,
+    private val metricsCollector: MetricsCollector
 ) : PaymentService {
+
+    init {
+        metricsCollector.register(*PaymentMetrics.VALUES)
+    }
 
     override fun executePayment(order: OrderDto): PaymentSubmissionDto {
         val timestamp = System.currentTimeMillis()
@@ -80,6 +87,8 @@ class PaymentServiceImpl(
                 sum += it.price * orderItemDto.value
             }
         }
+
+        metricsCollector.handle(PaymentMetrics.PAYMENT_SUM, sum.toDouble())
 
         financialLogRecordRepository.save(
             FinancialLogRecordEntity(
