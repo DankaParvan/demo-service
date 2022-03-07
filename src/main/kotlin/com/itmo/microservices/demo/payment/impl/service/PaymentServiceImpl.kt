@@ -31,6 +31,7 @@ class PaymentServiceImpl(
 
     init {
         metricsCollector.register(*PaymentMetrics.VALUES)
+        metricsCollector.handle(PaymentMetrics.RUN_COUNT_TIMES, 1.toDouble())
     }
 
     override fun executePayment(order: OrderDto): PaymentSubmissionDto {
