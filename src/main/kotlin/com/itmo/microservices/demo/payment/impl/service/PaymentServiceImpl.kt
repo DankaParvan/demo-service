@@ -89,7 +89,7 @@ class PaymentServiceImpl(
         }
 
         metricsCollector.handle(PaymentMetrics.REVENUE, sum.toDouble())
-        metricsCollector.handle(PaymentMetrics.EXTERNAL_SYSTEM_EXPENSE, sum.toDouble())
+//        metricsCollector.handle(PaymentMetrics.EXTERNAL_SYSTEM_EXPENSE, sum.toDouble())
 
         financialLogRecordRepository.save(
             FinancialLogRecordEntity(
