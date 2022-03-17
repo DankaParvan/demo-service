@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: p81
+  datasource:
+    url: jdbc:postgresql://postgresql:5432/p81
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: public
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: true
+
+server:
+  error:
+    include-exception: false
+    include-message: always
+    include-stacktrace: always
+
+security:
+  adminSecret: ${ADMIN_UPDATE_SECRET:secret000111}
+  secret: ${JWT_SECRET:secret12345678}
+  token-lifetime: 15m
+  refresh-token-lifetime: 30d
+
+external-payment-service:
+  url: http://tps:8080
+  sync-secret: ${EXTERNAL_PAYMENT_SERVICE_SYNC_SECRET:7d65037f-e9af-433e-8e3f-a3da77e019b1}
+  polling-secret: ${EXTERNAL_PAYMENT_SERVICE_POLLING_SECRET:ba37e656-4516-4ac9-a169-2f356388409b}
+  rate-limit: 50
+
+external-delivery-service:
+  url: http://tps:8080
+  sync-secret: ${EXTERNAL_DELIVERY_SERVICE_SYNC_SECRET:7d65037f-e9af-433e-8e3f-a3da77e019b1}
+  polling-secret: ${EXTERNAL_DELIVERY_SERVICE_POLLING_SECRET:ba37e656-4516-4ac9-a169-2f356388409b}
+  rate-limit: 50
+
+logstash:
+  url: logstash:4560
+
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include : "info,health,prometheus,metrics"

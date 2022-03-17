@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:h2DB;DB_CLOSE_DELAY=-1;CASE_INSENSITIVE_IDENTIFIERS=true
+    username: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: org.h2.Driver
+  jpa:
+    database: h2
+    hibernate:
+      ddl-auto: validate
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: true
+#    contexts: dev
+
+security:
+  token-lifetime: 30m
+
+external-payment-service:
+  url: http://77.234.215.138:30027
+  sync-secret: 7d65037f-e9af-433e-8e3f-a3da77e019b1
+  polling-secret: ba37e656-4516-4ac9-a169-2f356388409b
+  rate-limit: 50
+
+external-delivery-service:
+  url: http://77.234.215.138:30027
+  sync-secret: 7d65037f-e9af-433e-8e3f-a3da77e019b1
+  polling-secret: ba37e656-4516-4ac9-a169-2f356388409b
+  rate-limit: 50

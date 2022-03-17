@@ -1,0 +1,815 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="dd8c2227-417b-4fbb-9f13-bb802fa1e055" name="Changes" comment="yes">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/common-lib-0.6.0-SNAPSHOT.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/common-lib-0.6.0-SNAPSHOT.pom" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/common-lib-0.7.0-SNAPSHOT.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/common-lib-0.7.0-SNAPSHOT.pom" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvn-install-commonlib.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/p09.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/api/controller/BookingInternalController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/api/controller/ItemController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/api/exceptions/BookingNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/api/exceptions/ItemNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/api/model/BookingDescriptionDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/api/model/BookingLogRecordDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/api/model/ItemDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/api/service/ItemService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/impl/entity/Booking.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/impl/entity/BookingLogRecord.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/impl/entity/BookingLogRecordId.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/impl/entity/BookingLogRecordStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/impl/entity/BookingStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/impl/entity/Item.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/impl/logging/ItemServiceNotableEvents.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/impl/repository/BookingLogRecordRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/impl/repository/BookingLogRecordStatusRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/impl/repository/BookingRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/impl/repository/BookingStatusRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/impl/repository/ItemRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/config/MetricsConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/executors/RetryTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/executors/RetryingExecutorService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/executors/TimedRetryingExecutorService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/executors/exceptions/StopRetrying.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/executors/timeout/ExponentialTimeoutProvider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/executors/timeout/FixedTimeoutProvider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/executors/timeout/TimeoutProvider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/externalservice/ExternalServiceClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/externalservice/api/ApiErrorDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/externalservice/api/TransactionRequestDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/externalservice/api/TransactionResponseDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/limiters/Limiter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/limiters/RateLimiter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/metrics/MetricCollector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/metrics/MetricEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/metrics/MetricType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/transactions/TransactionPollingProcessor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/transactions/TransactionStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/transactions/TransactionSyncProcessor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/transactions/TransactionWrapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/transactions/WriteBackStorage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/transactions/exception/StopPolling.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/transactions/exception/TransactionProcessingException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/transactions/exception/TransactionStartException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/transactions/exception/TransactionUpdateException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/transactions/functional/ExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/transactions/functional/TransactionProcessor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/transactions/functional/TransactionStarter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/transactions/functional/TransactionUpdater.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/delivery/api/controller/DeliveryController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/delivery/api/controller/InternalDeliveryController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/delivery/api/messaging/DeliveryStatusEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/delivery/api/messaging/DeliveryStatusFailedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/delivery/api/messaging/DeliveryStatusSuccessEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/delivery/api/messaging/StartDeliveryEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/delivery/api/model/DeliveryInfoRecordDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/delivery/api/service/DeliveryService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/delivery/impl/config/ExternalDeliveryServiceCredentials.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/delivery/impl/entity/DeliveryTransactionsProcessorWriteback.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/delivery/impl/exceptions/DeliveryFailedException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/delivery/impl/logging/DeliveryServiceNotableEvents.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/delivery/impl/metrics/DeliveryMetricEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/delivery/impl/repository/DeliveryTransactionsProcessorWritebackRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/delivery/impl/service/DefaultDeliveryService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/api/controller/OrderController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/api/exeptions/BadOperationForCurrentOrderStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/api/exeptions/NotEnoughPermissions.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/api/exeptions/OrderNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/api/exeptions/OrderServiceConflictException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/api/exeptions/OrderServiceException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/api/model/BookingDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/api/model/OrderDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/api/model/OrderItemDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/api/model/PaymentLogRecord.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/api/service/IOrderService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/impl/entity/OrderItem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/impl/entity/OrderItemID.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/impl/entity/OrderStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/impl/entity/OrderTable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/impl/logging/OrderServiceNotableEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/impl/mapper/OrderItemToOrderItemDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/impl/mapper/OrderTableToOrderDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/impl/metrics/OrderMetricEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/impl/repository/IOrderItemRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/impl/repository/IOrderStatusRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/impl/repository/IOrderTableRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/impl/service/OrderItemService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/messaging/OrderCreatedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/order/messaging/OrderFinalizedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/api/controller/FinLogController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/api/controller/PaymentController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/api/messaging/PaymentCancelledEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/api/messaging/PaymentFailedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/api/messaging/PaymentStatusEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/api/messaging/PaymentSuccessfulEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/api/messaging/RefundOrderAnswerEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/api/messaging/RefundRequestEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/api/model/PaymentLogRecordDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/api/model/PaymentSubmissionDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/api/model/UserAccountFinancialLogRecordDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/api/service/PaymentService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/impl/config/ExternalPaymentServiceCredentials.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/impl/entity/FinancialOperationType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/impl/entity/PaymentLogRecord.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/impl/entity/PaymentStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/impl/entity/PaymentTransactionsProcessorWriteback.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/impl/exceptions/PaymentAlreadyExistsException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/impl/exceptions/PaymentException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/impl/exceptions/PaymentFailedException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/impl/exceptions/PaymentInUninterruptibleProcessing.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/impl/exceptions/PaymentInfoNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/impl/logging/PaymentServiceNotableEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/impl/mapper/Mappers.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/impl/repository/FinancialOperationTypeRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/impl/repository/PaymentLogRecordRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/impl/repository/PaymentStatusRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/impl/repository/PaymentTransactionsProcessorWritebackRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/payment/impl/service/DefaultPaymentService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/api/controller/AdminController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/api/controller/AuthController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/api/controller/UserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/api/exceptions/SecretIsIncorrectException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/api/exceptions/UserNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/api/messaging/UserCreatedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/api/messaging/UserDeletedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/api/model/AdminDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/api/model/AuthenticationRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/api/model/AuthenticationResult.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/api/model/RegistrationRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/api/model/UpdateAdminDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/api/model/UserModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/api/service/AdminService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/api/service/AuthService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/api/service/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/impl/config/SecurityProperties.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/impl/entity/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/impl/logging/AdminServiceNotableEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/impl/logging/AuthServiceNotableEvents.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/impl/logging/UserServiceNotableEvents.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/impl/repository/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/impl/service/DefaultAdminService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/impl/service/DefaultAuthService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/impl/service/DefaultUserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/impl/userdetails/UserAuth.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/impl/util/UserEntityModelMappers.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/catalog/impl/mapper/Mappers.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/catalog/impl/service/ItemServiceImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/common/metrics/DemoServiceMetricsCollector.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/common/security/SecurityConfiguration.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/notifications/api/service/NotificationService.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/notifications/impl/service/StubNotificationService.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/db/changelog/db.changelog-master.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/db/changelog/migrations/dev/2022-02-21-01-fill-tables.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/db/changelog/migrations/dev/changelog-dev-cumulative.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/db/changelog/migrations/v1/2021-10-27-01-initial-schema-tables-create.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/db/changelog/migrations/v1/2021-10-27-02-initial-schema-foreign-keys-create.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/db/changelog/migrations/v1/2021-11-01-01-fill-enum-tables.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/db/changelog/migrations/v1/changelog-v1-cumulative.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/db/changelog/migrations/v2/2021-12-07-01-create-transactions-processors-writeback.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/db/changelog/migrations/v2/2021-12-22-01-booking-service-schema-creation.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/db/changelog/migrations/v2/2021-12-22-01-insert-transactions-column-writeback.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/db/changelog/migrations/v2/2021-12-22-02-insert-bookingId-column-writeback.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/db/changelog/migrations/v2/changelog-v2-cumulative.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/catalog/common/HardcodedValues.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/catalog/controller/ItemControllerRolesTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/catalog/controller/ItemControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/catalog/mapper/MappersTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/catalog/repository/ItemRepositoryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/catalog/service/ItemServiceImplTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/common/executors/timeout/ExponentialTimeoutProviderTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/common/executors/timeout/FixedTimeoutProviderTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/common/security/NoSecurityConfigurerAdapterConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/common/security/WithMockCustomUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/common/security/WithMockCustomUserSecurityContextFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/common/test/DataJpaTestCase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/common/test/DefaultSecurityTestCase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/common/test/NoWebSecurityTestCase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/common/test/ResetMetricsTestExecutionListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/delivery/api/controller/DeliveryControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/delivery/impl/service/DefaultDeliveryServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/order/HardcodedValues.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/order/controller/OrderControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/order/repository/OrderStatusRepositoryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/order/repository/OrderTableRepositoryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/order/service/OrderItemServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/payment/common/HardcodedValues.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/payment/controller/FinLogControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/payment/controller/PaymentControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/payment/model/PaymentLogRecordDtoTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/payment/model/PaymentSubmissionDtoTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/payment/model/UserAccountFinancialLogRecordDtoTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/payment/repository/FinancialOperationTypeRepositoryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/payment/repository/PaymentLogRecordRepositoryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/payment/repository/PaymentStatusRepositoryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/user/controller/AdminControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/user/controller/UserControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/user/service/AdminServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/user/service/UserServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/itmo/microservices/shop/user/util/UserUtilTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/META-INF/p09.kotlin_module" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/application-dev.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/ShopServiceApplication.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/ShopServiceApplicationKt.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/api/controller/BookingInternalController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/api/controller/ItemController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/api/exceptions/BookingNotFoundException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/api/exceptions/ItemNotFoundException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/api/model/BookingDescriptionDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/api/model/BookingLogRecordDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/api/model/ItemDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/api/service/ItemService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/impl/entity/Booking.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/impl/entity/BookingLogRecord.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/impl/entity/BookingLogRecordId.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/impl/entity/BookingLogRecordStatus$StatusStrings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/impl/entity/BookingLogRecordStatus.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/impl/entity/BookingStatus$StatusStrings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/impl/entity/BookingStatus.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/impl/entity/Item.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/impl/logging/ItemServiceNotableEvents.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/impl/mapper/MappersKt.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/impl/repository/BookingLogRecordRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/impl/repository/BookingLogRecordStatusRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/impl/repository/BookingRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/impl/repository/BookingStatusRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/impl/repository/ItemRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/catalog/impl/service/ItemServiceImpl.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/config/EventBusConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/config/EventBusSubscriberPostProcessor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/config/OpenApiConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/exception/AccessDeniedException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/exception/NotFoundException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/exception/UserExistsException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/executors/RetryTask.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/executors/RetryingExecutorService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/executors/TimedRetryingExecutorService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/executors/exceptions/StopRetrying.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/executors/timeout/ExponentialTimeoutProvider.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/executors/timeout/FixedTimeoutProvider.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/executors/timeout/TimeoutProvider.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/externalservice/ExternalServiceClient.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/externalservice/api/ApiErrorDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/externalservice/api/TransactionRequestDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/externalservice/api/TransactionResponseDto$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/externalservice/api/TransactionResponseDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/limiters/Limiter.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/limiters/RateLimiter.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/logging/CommonNotableEvents.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/metrics/MetricCollector$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/metrics/MetricCollector.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/metrics/MetricEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/metrics/MetricType.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/security/JwtAuthenticationEntryPoint.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/security/JwtAuthenticationFilter.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/security/RefreshJwtAuthenticationFilter.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/security/RequestJwtRetrieverKt.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/security/SecurityConfiguration.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/transactions/TransactionPollingProcessor$Builder$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/transactions/TransactionPollingProcessor$Builder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/transactions/TransactionPollingProcessor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/transactions/TransactionStatus.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/transactions/TransactionSyncProcessor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/transactions/TransactionWrapper.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/transactions/WriteBackStorage.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/transactions/exception/StopPolling.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/transactions/exception/TransactionProcessingException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/transactions/exception/TransactionStartException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/transactions/exception/TransactionUpdateException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/transactions/functional/ExceptionHandler.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/transactions/functional/TransactionProcessor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/transactions/functional/TransactionStarter.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/common/transactions/functional/TransactionUpdater.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/api/controller/DeliveryController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/api/controller/InternalDeliveryController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/api/messaging/DeliveryStatusEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/api/messaging/DeliveryStatusFailedEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/api/messaging/DeliveryStatusSuccessEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/api/messaging/StartDeliveryEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/api/model/DeliveryInfoRecordDto$Outcome.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/api/model/DeliveryInfoRecordDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/api/service/DeliveryService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/impl/config/ExternalDeliveryServiceCredentials.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/impl/entity/DeliveryTransactionsProcessorWriteback.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/impl/exceptions/DeliveryFailedException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/impl/logging/DeliveryServiceNotableEvents.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/impl/metrics/DeliveryMetricEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/impl/repository/DeliveryTransactionsProcessorWritebackRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/impl/service/DefaultDeliveryService$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/impl/service/DefaultDeliveryService$TransactionContext.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/impl/service/DefaultDeliveryService$WriteBackStorageImpl.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/delivery/impl/service/DefaultDeliveryService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/notifications/api/service/NotificationService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/notifications/impl/messaging/NotificationModuleEventListener.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/notifications/impl/service/StubNotificationService$Companion.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/notifications/impl/service/StubNotificationService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/api/controller/OrderController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/api/exeptions/BadOperationForCurrentOrderStatus.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/api/exeptions/NotEnoughPermissions.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/api/exeptions/OrderNotFoundException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/api/exeptions/OrderServiceConflictException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/api/exeptions/OrderServiceException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/api/model/BookingDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/api/model/OrderDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/api/model/OrderItemDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/api/model/PaymentLogRecord.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/api/service/IOrderService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/impl/entity/OrderItem.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/impl/entity/OrderItemID.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/impl/entity/OrderStatus.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/impl/entity/OrderTable.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/impl/logging/OrderServiceNotableEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/impl/mapper/OrderItemToOrderItemDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/impl/mapper/OrderTableToOrderDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/impl/metrics/OrderMetricEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/impl/repository/IOrderItemRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/impl/repository/IOrderStatusRepository$StatusNames.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/impl/repository/IOrderStatusRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/impl/repository/IOrderTableRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/impl/service/OrderItemService$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/impl/service/OrderItemService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/messaging/OrderCreatedEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/order/messaging/OrderFinalizedEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/api/controller/FinLogController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/api/controller/PaymentController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/api/messaging/PaymentCancelledEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/api/messaging/PaymentFailedEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/api/messaging/PaymentStatusEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/api/messaging/PaymentSuccessfulEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/api/messaging/RefundOrderAnswerEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/api/messaging/RefundRequestEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/api/model/PaymentLogRecordDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/api/model/PaymentSubmissionDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/api/model/UserAccountFinancialLogRecordDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/api/service/PaymentService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/config/ExternalPaymentServiceCredentials.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/entity/FinancialOperationType.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/entity/PaymentLogRecord.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/entity/PaymentStatus.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/entity/PaymentTransactionsProcessorWriteback.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/exceptions/PaymentAlreadyExistsException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/exceptions/PaymentException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/exceptions/PaymentFailedException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/exceptions/PaymentInUninterruptibleProcessing.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/exceptions/PaymentInfoNotFoundException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/logging/PaymentServiceNotableEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/mapper/Mappers.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/repository/FinancialOperationTypeRepository$VALUES.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/repository/FinancialOperationTypeRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/repository/PaymentLogRecordRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/repository/PaymentStatusRepository$VALUES.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/repository/PaymentStatusRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/repository/PaymentTransactionsProcessorWritebackRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/service/DefaultPaymentService$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/service/DefaultPaymentService$SubmittedPaymentKey.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/service/DefaultPaymentService$SubmittedPaymentValue.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/service/DefaultPaymentService$TransactionContext.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/service/DefaultPaymentService$WriteBackStorageImpl.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/payment/impl/service/DefaultPaymentService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/api/controller/AdminController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/api/controller/AuthController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/api/controller/UserController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/api/exceptions/SecretIsIncorrectException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/api/exceptions/UserNotFoundException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/api/messaging/UserCreatedEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/api/messaging/UserDeletedEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/api/model/AdminDTO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/api/model/AuthenticationRequest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/api/model/AuthenticationResult.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/api/model/RegistrationRequest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/api/model/UpdateAdminDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/api/model/UserModel.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/api/service/AdminService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/api/service/AuthService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/api/service/UserService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/config/SecurityProperties.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/entity/User.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/logging/AdminServiceNotableEvent.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/logging/AuthServiceNotableEvents.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/logging/UserServiceNotableEvents.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/repository/UserRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/service/DefaultAdminService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/service/DefaultAuthService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/service/DefaultUserService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/service/JwtTokenManager$TokenType.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/service/JwtTokenManager$getExpirationDateFromToken$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/service/JwtTokenManager$getIdFromToken$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/service/JwtTokenManager$getRolesFromToken$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/service/JwtTokenManager$getUsernameFromToken$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/service/JwtTokenManager$readAccessToken$type$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/service/JwtTokenManager$readRefreshToken$type$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/service/JwtTokenManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/userdetails/UserAuth.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/itmo/microservices/shop/user/impl/util/UserEntityModelMappers.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/db/changelog/db.changelog-master.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/db/changelog/migrations/dev/2022-02-21-01-fill-tables.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/db/changelog/migrations/dev/changelog-dev-cumulative.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/db/changelog/migrations/v1/2021-10-27-01-initial-schema-tables-create.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/db/changelog/migrations/v1/2021-10-27-02-initial-schema-foreign-keys-create.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/db/changelog/migrations/v1/2021-11-01-01-fill-enum-tables.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/db/changelog/migrations/v1/changelog-v1-cumulative.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/db/changelog/migrations/v2/2021-12-07-01-create-transactions-processors-writeback.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/db/changelog/migrations/v2/2021-12-22-01-booking-service-schema-creation.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/db/changelog/migrations/v2/2021-12-22-01-insert-transactions-column-writeback.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/db/changelog/migrations/v2/2021-12-22-02-insert-bookingId-column-writeback.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/db/changelog/migrations/v2/changelog-v2-cumulative.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/logback-spring.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/catalog/common/HardcodedValues.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/catalog/controller/ItemControllerRolesTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/catalog/controller/ItemControllerTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/catalog/mapper/MappersTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/catalog/repository/ItemRepositoryTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/catalog/service/ItemServiceImplTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/common/executors/timeout/ExponentialTimeoutProviderTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/common/executors/timeout/FixedTimeoutProviderTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/common/security/NoSecurityConfigurerAdapterConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/common/security/WithMockCustomUser.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/common/security/WithMockCustomUserSecurityContextFactory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/common/test/DataJpaTestCase.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/common/test/DefaultSecurityTestCase.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/common/test/NoWebSecurityTestCase.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/common/test/ResetMetricsTestExecutionListener.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/delivery/api/controller/DeliveryControllerTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/delivery/impl/service/DefaultDeliveryServiceTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/order/HardcodedValues.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/order/controller/OrderControllerTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/order/repository/OrderStatusRepositoryTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/order/repository/OrderTableRepositoryTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/order/service/OrderItemServiceTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/payment/common/HardcodedValues.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/payment/controller/FinLogControllerTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/payment/controller/PaymentControllerTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/payment/model/PaymentLogRecordDtoTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/payment/model/PaymentSubmissionDtoTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/payment/model/UserAccountFinancialLogRecordDtoTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/payment/repository/FinancialOperationTypeRepositoryTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/payment/repository/PaymentLogRecordRepositoryTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/payment/repository/PaymentStatusRepositoryTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/user/controller/AdminControllerTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/user/controller/UserControllerTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/user/service/AdminServiceTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/user/service/UserServiceTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/itmo/microservices/shop/user/util/UserUtilTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test-trigger" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/docs.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.jpb/jpb-settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/entities.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/messaging.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/DemoServiceApplication.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/ShopServiceApplication.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/common/config/EventBusConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/common/config/EventBusConfig.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/common/config/EventBusSubscriberPostProcessor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/common/config/EventBusSubscriberPostProcessor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/common/config/OpenApiConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/common/config/OpenApiConfig.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/common/exception/AccessDeniedException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/common/exception/AccessDeniedException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/common/exception/NotFoundException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/common/exception/NotFoundException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/common/logging/CommonNotableEvents.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/common/logging/CommonNotableEvents.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/common/metrics/Metric.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/common/metrics/MetricType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/common/metrics/MetricsCollector.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/common/security/JwtAuthenticationEntryPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/common/security/JwtAuthenticationEntryPoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/common/security/JwtAuthenticationFilter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/common/security/JwtAuthenticationFilter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/common/security/RefreshJwtAuthenticationFilter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/common/security/RefreshJwtAuthenticationFilter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/common/security/RequestJwtRetriever.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/common/security/RequestJwtRetriever.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/common/security/SecurityConfiguration.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/delivery/api/controller/DeliveryController.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/delivery/api/messaging/Events.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/delivery/api/model/DeliveryDTO.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/delivery/api/model/DeliveryModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/delivery/api/model/DeliveryType.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/delivery/api/model/SlotsModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/delivery/api/service/DeliveryService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/delivery/impl/entity/Delivery.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/delivery/impl/entity/Slots.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/delivery/impl/exeptions/BadRequestExeption.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/common/exception/UserExistsException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/delivery/impl/exeptions/OutOfRangeExeption.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/delivery/impl/logging/DeliveryServiceNotableEvents.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/delivery/impl/repository/DeliveryRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/delivery/impl/repository/SlotsRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/delivery/impl/service/DefaultDeliveryService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/delivery/impl/util/DeliveryModelMappers.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/delivery/impl/util/SlotsModelMappers.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/internal/api/controller/InternalController.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/internal/api/model/BookingLogRecord.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/internal/api/model/BookingStatus.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/internal/api/model/CatalogItemRequestDto.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/internal/api/model/DeliveryInfoRecord.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/internal/api/model/DeliverySubmissionOutcome.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/internal/api/service/IInternalService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/internal/impl/service/InternalService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/notifications/api/service/NotificationService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/notifications/impl/entity/NotificationUser.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/notifications/impl/messaging/NotificationModuleEventListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/notifications/impl/messaging/NotificationModuleEventListener.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/notifications/impl/repository/NotificationUserRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/notifications/impl/service/StubNotificationService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/api/controller/OrderController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/api/dto/AbstractDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/api/dto/BookingDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/api/dto/OrderDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/api/dto/OrderItemDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/api/dto/OrderStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/api/event/OrderPaymentEvent.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/api/event/OrderPaymentTrigger.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/api/exception/BookingException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/api/exception/OrderIsNotExistException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/api/service/IOrderService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/config/ModelMapperConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/impl/dao/OrderItemRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/impl/dao/OrderRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/impl/entity/AbstractEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/impl/entity/BookingAttemptStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/impl/entity/BookingResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/impl/entity/OrderEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/impl/service/OrderDiscardService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/impl/service/OrderService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/impl/service/PaymentEventListener.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/util/mapping/AbstractMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/util/mapping/Mapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/util/mapping/OrderMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/util/scheduler/OrderDiscardJob.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/util/scheduler/TimerInfo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/order/util/scheduler/TimerUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/api/controller/PaymentController.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/api/event/TransactionPaymentTrigger.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/api/event/TransactionRequestedEvent.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/api/model/FinancialOperationType.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/api/model/PaymentLogRecordDto.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/api/model/PaymentModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/api/model/PaymentRequestDto.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/api/model/PaymentStatus.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/api/model/PaymentSubmissionDto.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/api/model/TransactionResponse.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/api/model/UserAccountFinancialLogRecordDto.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/api/service/PaymentService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/impl/entity/FinancialLogRecordEntity.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/impl/entity/Payment.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/impl/entity/transaction_post.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/impl/metrics/PaymentMetrics.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/impl/repository/FinancialLogRecordRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/impl/repository/PaymentRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/impl/service/OrderPaymentEventListener.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/impl/service/PaymentServiceImpl.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/payment/impl/service/Registrator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/users/api/controller/UserController.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/users/api/messaging/Events.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/users/api/model/AuthenticationRequest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/users/api/model/AuthenticationResult.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/users/api/model/Status.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/users/api/model/TokenResponseDto.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/users/api/model/UserModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/users/api/model/UserRequestDto.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/users/api/model/UserResponseDto.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/users/api/service/IUserService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/users/impl/config/SecurityProperties.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/users/impl/entity/User.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/users/impl/logging/UserServiceNotableEvents.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/users/impl/repository/UserRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/users/impl/service/JwtTokenManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/user/impl/service/JwtTokenManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/users/impl/service/UserService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/users/impl/util/AppUserEntityModelMappers.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/warehouse/api/controller/WarehouseController.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/warehouse/api/exception/ItemIsNotExistException.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/warehouse/api/exception/ItemQuantityException.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/warehouse/api/model/CatalogItemDto.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/warehouse/api/model/CatalogItemModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/warehouse/api/model/CatalogItemRequest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/warehouse/api/model/ItemQuantityRequestDTO.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/warehouse/api/model/ItemResponseDTO.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/warehouse/api/model/WarehouseItemDTO.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/warehouse/impl/entity/CatalogItem.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/warehouse/impl/entity/WarehouseItem.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/warehouse/impl/logging/WarehouseServiceNotableEvents.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/warehouse/impl/repository/CatalogItemRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/warehouse/impl/repository/WarehouseItemRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/demo/warehouse/impl/service/WarehouseService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/db.changelog-master.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.1.0/01_users.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.1.0/01_users_drop.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.1.0/02_orders.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.1.0/02_orders_drop.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.1.0/03_warehouse.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.1.0/03_warehouse_drop.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.1.0/04_delivery.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.1.0/04_delivery_drop.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.1.0/05_payment.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.1.0/05_payment_drop.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.1.0/06_log.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.1.0/06_log_drop.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.1.0/db_v0.1.0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.2.0/01_drop_order_item.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.2.0/01_order_item.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.2.0/02_rollback_delivery.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.2.0/02_update_delivery.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/changelog/v0.2.0/db_v0.2.0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/com/itmo/microservices/demo/delivery/DeliveryControllerTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/com/itmo/microservices/demo/delivery/api/DeliveryControllerTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/com/itmo/microservices/demo/order/api/controller/OrderControllerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/com/itmo/microservices/demo/payment/api/PaymentControllerTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/com/itmo/microservices/demo/users/api/UserControllerTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/com/itmo/microservices/demo/warehouse/WarehouseControllerTest.kt" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="myId2FirstActivated">
+      <map>
+        <entry key="JPA Inspector" value="true" />
+        <entry key="JPA Palette" value="true" />
+        <entry key="JPA Structure" value="true" />
+      </map>
+    </option>
+    <option name="myId2Visible">
+      <map>
+        <entry key="JPA Inspector" value="false" />
+        <entry key="JPA Palette" value="false" />
+        <entry key="JPA Structure" value="false" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectId" id="26W2auVTbz55m8Is79GrOEY9z7g" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.ShopServiceApplication">
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="mvn-install-commonlib.sh" type="ShConfigurationType" temporary="true">
+      <option name="SCRIPT_TEXT" value="" />
+      <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+      <option name="SCRIPT_PATH" value="$PROJECT_DIR$/mvn-install-commonlib.sh" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+      <option name="INTERPRETER_PATH" value="/bin/bash" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="EXECUTE_IN_TERMINAL" value="true" />
+      <option name="EXECUTE_SCRIPT_FILE" value="true" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="DemoServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true">
+      <module name="p09" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.itmo.microservices.demo.DemoServiceApplication" />
+      <option name="ACTIVE_PROFILES" value="dev" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SHORTEN_COMMAND_LINE" value="NONE" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ShopServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="p09" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.itmo.microservices.shop.ShopServiceApplication" />
+      <option name="ACTIVE_PROFILES" value="dev" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SHORTEN_COMMAND_LINE" value="NONE" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Shell Script.mvn-install-commonlib.sh" />
+      <item itemvalue="Spring Boot.ShopServiceApplication" />
+      <item itemvalue="Spring Boot.DemoServiceApplication" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Shell Script.mvn-install-commonlib.sh" />
+        <item itemvalue="Spring Boot.DemoServiceApplication" />
+        <item itemvalue="Spring Boot.DemoServiceApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dd8c2227-417b-4fbb-9f13-bb802fa1e055" name="Changes" comment="" />
+      <created>1647525097089</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1647525097089</updated>
+      <workItem from="1647525100906" duration="10678000" />
+    </task>
+    <task id="LOCAL-00001" summary="yes">
+      <created>1647526666059</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1647526666059</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="yes" />
+    <option name="LAST_COMMIT_MESSAGE" value="yes" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/catalog/impl/service/ItemServiceImpl.kt</url>
+          <line>81</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/main/kotlin/com/itmo/microservices/shop/catalog/impl/service/ItemServiceImpl.kt</url>
+          <line>78</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/catalog/api/controller/ItemController.java</url>
+          <line>61</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/itmo/microservices/shop/user/api/controller/UserController.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

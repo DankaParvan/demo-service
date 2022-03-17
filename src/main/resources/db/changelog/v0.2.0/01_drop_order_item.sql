@@ -1,2 +1,0 @@
-DROP TABLE IF EXISTS order_entity_items_map
-ENTER
