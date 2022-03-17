@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -55,14 +56,29 @@ public class OrderService implements IOrderService {
     public OrderDto createOrder() {
         OrderEntity newOrder = new OrderEntity();
         orderRepository.save(newOrder);
-        return orderMapper.toDto(newOrder);
+
+        return new OrderDto(
+                newOrder.getId(),
+                System.currentTimeMillis(),
+                OrderStatus.COLLECTING,
+                Collections.emptyMap(),
+                null,
+                Collections.emptyList()
+        );
     }
 
     @Override
     public OrderDto getOrderById(UUID uuid) throws OrderIsNotExistException {
-        var order = orderMapper.toDto(orderRepository.getById(uuid));
-        if (order == null) throw new OrderIsNotExistException("Order is not exist");
-        return order;
+        var orderEntity = orderRepository.getById(uuid);
+
+        return new OrderDto(
+                orderEntity.getId(),
+                orderEntity.getTimeCreated(),
+                orderEntity.getStatus(),
+                orderEntity.getItemsMap(),
+                orderEntity.getDeliveryDuration(),
+                Collections.emptyList()
+        );
     }
 
     @Override
