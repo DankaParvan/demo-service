@@ -4,7 +4,6 @@ import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.itmo.microservices.demo.order.api.service.IOrderService
 import com.itmo.microservices.demo.payment.api.event.TransactionRequestedEvent
-import com.itmo.microservices.demo.payment.api.model.PaymentStatus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import javax.annotation.PostConstruct

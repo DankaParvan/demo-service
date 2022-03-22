@@ -1,9 +1,11 @@
 package com.itmo.microservices.demo.order.impl.service;
 
+import com.itmo.microservices.demo.common.metrics.MetricsCollector;
 import com.itmo.microservices.demo.order.api.event.OrderPaymentEvent;
 import com.itmo.microservices.demo.order.api.event.OrderPaymentTrigger;
 import com.itmo.microservices.demo.order.api.exception.BookingException;
 import com.itmo.microservices.demo.order.api.dto.BookingDto;
+import com.itmo.microservices.demo.payment.impl.metrics.PaymentMetrics;
 import com.itmo.microservices.demo.payment.impl.repository.FinancialLogRecordRepository;
 import com.itmo.microservices.demo.warehouse.api.model.ItemResponseDTO;
 import com.itmo.microservices.demo.order.api.dto.OrderDto;
@@ -17,13 +19,13 @@ import com.itmo.microservices.demo.order.impl.entity.OrderEntity;
 import com.itmo.microservices.demo.order.util.mapping.OrderMapper;
 import com.itmo.microservices.demo.warehouse.api.model.ItemQuantityRequestDTO;
 import com.itmo.microservices.demo.warehouse.impl.service.WarehouseService;
+import io.micrometer.prometheus.PrometheusMeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,6 +38,7 @@ public class OrderService implements IOrderService {
     private final OrderMapper orderMapper;
     private final OrderPaymentTrigger orderPaymentTrigger;
     private final OrderDiscardService discardService;
+    private final MetricsCollector metricsCollector;
 
     @Autowired
     public OrderService(OrderRepository orderRepository,
@@ -43,13 +46,15 @@ public class OrderService implements IOrderService {
                         WarehouseService warehouseService,
                         OrderMapper orderMapper,
                         OrderPaymentTrigger orderPaymentTrigger,
-                        OrderDiscardService discardService) {
+                        OrderDiscardService discardService,
+                        PrometheusMeterRegistry prometheusMeterRegistry) {
         this.orderRepository = orderRepository;
         this.financialLogRecordRepository = financialLogRecordRepository;
         this.warehouseService = warehouseService;
         this.orderMapper = orderMapper;
         this.orderPaymentTrigger = orderPaymentTrigger;
         this.discardService = discardService;
+        this.metricsCollector = new MetricsCollector(prometheusMeterRegistry);
     }
 
     @Override
@@ -57,6 +62,7 @@ public class OrderService implements IOrderService {
         OrderEntity newOrder = new OrderEntity();
         orderRepository.save(newOrder);
 
+        metricsCollector.handle(PaymentMetrics.ORDER_CREATED, 1);
         return new OrderDto(
                 newOrder.getId(),
                 System.currentTimeMillis(),
@@ -98,6 +104,7 @@ public class OrderService implements IOrderService {
                 unbookLikeController(itemList);
 
                 order.setStatus(OrderStatus.COLLECTING);
+                metricsCollector.handle(PaymentMetrics.ORDER_STATUS_CHANGED, 1, "Booked", "Collecting");
             }
             order.getItemsMap().put(itemId, amount);
 
@@ -126,6 +133,7 @@ public class OrderService implements IOrderService {
 
         if (bookingResponse.getStatus() == BookingAttemptStatus.SUCCESS) {
             order.setStatus(OrderStatus.BOOKED);
+            metricsCollector.handle(PaymentMetrics.ORDER_STATUS_CHANGED, 1, "Collecting", "Booked");
             discardService.scheduleOrderDiscard(this::discardOrder, orderId);
             orderRepository.save(order);
             return new BookingDto(orderId);
@@ -213,6 +221,7 @@ public class OrderService implements IOrderService {
         OrderEntity order = orderRepository.getById(orderId);
         if (order.getStatus() == OrderStatus.BOOKED) {
             order.setStatus(OrderStatus.COLLECTING);
+            metricsCollector.handle(PaymentMetrics.ORDER_STATUS_CHANGED, 1, "Booked", "Collecting");
             orderRepository.save(order);
 
             List<ItemQuantityRequestDTO> itemList = order.getItemsMap().entrySet()
@@ -223,5 +232,7 @@ public class OrderService implements IOrderService {
                     .collect(Collectors.toList());
             unbookLikeController(itemList);
         }
+        metricsCollector.handle(PaymentMetrics.CURRENT_ABANDONED_ORDER_NUM, 1);
+        metricsCollector.handle(PaymentMetrics.DISCARDED_ORDERS, 1);
     }
 }
