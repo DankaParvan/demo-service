@@ -14,7 +14,7 @@ spring:
       hibernate:
         enable_lazy_load_no_trans: true
   liquibase:
-    change-log: classpath:/db/changelog/db.changelog-master.xml
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
 
 server:
   error:
