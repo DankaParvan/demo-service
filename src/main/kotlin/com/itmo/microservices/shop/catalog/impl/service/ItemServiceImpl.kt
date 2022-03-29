@@ -76,17 +76,20 @@ class ItemServiceImpl(
 
     @Throws(IllegalArgumentException::class)
     override fun createItem(item: ItemDTO) {
+        validateItem(item, "createItem: ")
+        item.id = null
+        itemRepository.save(item.mapToEntityWithNullId())
+        logger.info(ItemServiceNotableEvents.I_CREATE_ITEM_REQUEST, item)
+    }
+
+    @Throws(IllegalArgumentException::class)
+    override fun generateItems() {
         for (i in 0 until 100_001) {
             val newItem = ItemDTO(UUID.randomUUID(), getRandomString(7), getRandomString(15), 300, 1_000_000)
-            item.id = null
+            newItem.id = null
             itemRepository.save(newItem.mapToEntityWithNullId())
-            logger.info(ItemServiceNotableEvents.I_CREATE_ITEM_REQUEST, item)
+            logger.info(ItemServiceNotableEvents.I_CREATE_ITEM_REQUEST, newItem)
         }
-
-//        validateItem(item, "createItem: ")
-//        item.id = null
-//        itemRepository.save(item.mapToEntityWithNullId())
-//        logger.info(ItemServiceNotableEvents.I_CREATE_ITEM_REQUEST, item)
     }
 
     fun getRandomString(length: Int) : String {

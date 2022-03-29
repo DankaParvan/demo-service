@@ -60,6 +60,13 @@ public class ItemController {
         itemService.createItem(item);
     }
 
+    @GetMapping("/generate")
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(security = {@SecurityRequirement(name = "bearerAuth")})
+    void generateItems() {
+        itemService.generateItems();
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(security = {@SecurityRequirement(name = "bearerAuth")})
