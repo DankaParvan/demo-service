@@ -32,7 +32,9 @@ import com.itmo.microservices.shop.delivery.impl.metrics.DeliveryMetricEvent;
 import com.itmo.microservices.shop.delivery.impl.repository.DeliveryInfoRecordRepository;
 import com.itmo.microservices.shop.delivery.impl.repository.DeliveryTransactionsProcessorWritebackRepository;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.reactive.TransactionContext;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
@@ -41,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -75,44 +78,48 @@ public class DefaultDeliveryService implements DeliveryService {
                                   DeliveryInfoRecordRepository deliveryInfoRecordRepository,
                                   ExternalDeliveryServiceCredentials externalDeliveryServiceCredentials,
                                   EventBus eventBus, MetricCollector metricCollector) {
-        this.writebackRepository = writebackRepository;
-        this.deliveryInfoRecordRepository = deliveryInfoRecordRepository;
-        this.eventBus = eventBus;
-        this.metricCollector = metricCollector;
-        metricCollector.register(DeliveryMetricEvent.values());
+        try {
+            this.writebackRepository = writebackRepository;
+            this.deliveryInfoRecordRepository = deliveryInfoRecordRepository;
+            this.eventBus = eventBus;
+            this.metricCollector = metricCollector;
+            metricCollector.register(DeliveryMetricEvent.values());
 
-        pollingClient = new ExternalServiceClient(externalDeliveryServiceCredentials.getUrl(), externalDeliveryServiceCredentials.getPollingSecret());
-        syncClient = new ExternalServiceClient(externalDeliveryServiceCredentials.getUrl(), externalDeliveryServiceCredentials.getSyncSecret());
+            pollingClient = new ExternalServiceClient(externalDeliveryServiceCredentials.getUrl(), externalDeliveryServiceCredentials.getPollingSecret());
+            syncClient = new ExternalServiceClient(externalDeliveryServiceCredentials.getUrl(), externalDeliveryServiceCredentials.getSyncSecret());
 
-        TimeoutProvider timeoutProvider = new FixedTimeoutProvider(POLLING_RETRY_INTERVAL_MILLIS);
-        RetryingExecutorService retryingExecutorService = new TimedRetryingExecutorService(RETRYING_EXECUTOR_POOL_SIZE, timeoutProvider);
-        syncTransactionProcessor = new TransactionSyncProcessor<>((Object... ignored) -> syncClient.post().toTransactionWrapper());
+            TimeoutProvider timeoutProvider = new FixedTimeoutProvider(POLLING_RETRY_INTERVAL_MILLIS);
+            RetryingExecutorService retryingExecutorService = new TimedRetryingExecutorService(RETRYING_EXECUTOR_POOL_SIZE, timeoutProvider);
+            syncTransactionProcessor = new TransactionSyncProcessor<>((Object... ignored) -> syncClient.post().toTransactionWrapper());
 
-        pollingTransactionProcessor = TransactionPollingProcessor.<TransactionResponseDto, UUID, TransactionContext>builder()
-                .withPollingExecutorService(retryingExecutorService)
-                .withWriteBackStorage(new WriteBackStorageImpl())
-                .withTransactionStartLimiter(new RateLimiter(externalDeliveryServiceCredentials.getRateLimit(), TimeUnit.MINUTES))
-                .withTransactionStarter((Object... ignored) -> {
-                    try {
-                        var transactionWrapper = pollingClient.post().toTransactionWrapper();
-                        metricCollector.passEvent(DeliveryMetricEvent.DELIVERY_EXTERNAL_EXECUTOR_ACTIVE_TASKS, 1, "deliveryPolling");
-                        return transactionWrapper;
-                    } catch (HttpServerErrorException | HttpClientErrorException e) {
-                        throw new TransactionStartException(e);
-                    }
-                })
-                .withTransactionUpdater((UUID transactionId) -> pollingClient.get(transactionId).toTransactionWrapper())
-                .withTransactionFinishHandler((transaction, context) -> {
-                    metricCollector.passEvent(DeliveryMetricEvent.DELIVERY_EXTERNAL_EXECUTOR_ACTIVE_TASKS, -1, "deliveryPolling");
-                    transactionCompletionProcessor(transaction, context);
-                })
-                .withExceptionHandler(HttpServerErrorException.InternalServerError.class, (Throwable e) -> metricCollector.passEvent(DeliveryMetricEvent.DELIVERY_EXTERNAL_REQUESTS, 1, "500", "false", "false"))
-                .withExceptionHandler(HttpClientErrorException.TooManyRequests.class, (Throwable e) -> metricCollector.passEvent(DeliveryMetricEvent.DELIVERY_EXTERNAL_REQUESTS, 1, "429", "false", "false"))
-                .withExceptionHandler(HttpClientErrorException.Unauthorized.class, (Throwable e) -> metricCollector.passEvent(DeliveryMetricEvent.DELIVERY_EXTERNAL_REQUESTS, 1, "401", "false", "false"))
-                // External service issue, just retry on 404 until SUCCESS received
-                // See https://t.me/c/1436658303/1445
-                .withIgnoringExceptionHandler(HttpClientErrorException.NotFound.class)
-                .build();
+            pollingTransactionProcessor = TransactionPollingProcessor.<TransactionResponseDto, UUID, TransactionContext>builder()
+                    .withPollingExecutorService(retryingExecutorService)
+                    .withWriteBackStorage(new WriteBackStorageImpl())
+                    .withTransactionStartLimiter(new RateLimiter(externalDeliveryServiceCredentials.getRateLimit(), TimeUnit.MINUTES))
+                    .withTransactionStarter((Object... ignored) -> {
+                        try {
+                            var transactionWrapper = pollingClient.post().toTransactionWrapper();
+                            metricCollector.passEvent(DeliveryMetricEvent.DELIVERY_EXTERNAL_EXECUTOR_ACTIVE_TASKS, 1, "deliveryPolling");
+                            return transactionWrapper;
+                        } catch (HttpServerErrorException | HttpClientErrorException e) {
+                            throw new TransactionStartException(e);
+                        }
+                    })
+                    .withTransactionUpdater((UUID transactionId) -> pollingClient.get(transactionId).toTransactionWrapper())
+                    .withTransactionFinishHandler((transaction, context) -> {
+                        metricCollector.passEvent(DeliveryMetricEvent.DELIVERY_EXTERNAL_EXECUTOR_ACTIVE_TASKS, -1, "deliveryPolling");
+                        transactionCompletionProcessor(transaction, context);
+                    })
+                    .withExceptionHandler(HttpServerErrorException.InternalServerError.class, (Throwable e) -> metricCollector.passEvent(DeliveryMetricEvent.DELIVERY_EXTERNAL_REQUESTS, 1, "500", "false", "false"))
+                    .withExceptionHandler(HttpClientErrorException.TooManyRequests.class, (Throwable e) -> metricCollector.passEvent(DeliveryMetricEvent.DELIVERY_EXTERNAL_REQUESTS, 1, "429", "false", "false"))
+                    .withExceptionHandler(HttpClientErrorException.Unauthorized.class, (Throwable e) -> metricCollector.passEvent(DeliveryMetricEvent.DELIVERY_EXTERNAL_REQUESTS, 1, "401", "false", "false"))
+                    // External service issue, just retry on 404 until SUCCESS received
+                    // See https://t.me/c/1436658303/1445
+                    .withIgnoringExceptionHandler(HttpClientErrorException.NotFound.class)
+                    .build();
+        } catch (NullPointerException e) {
+            LoggerFactory.getLogger(DefaultDeliveryService.class).debug("npe ${1}", e);
+        }
     }
 
     private Long findOrAddStartDeliveryEventTime(StartDeliveryEvent event) {
