@@ -56,23 +56,23 @@ public class DefaultDeliveryService implements DeliveryService {
     private static final long POLLING_RETRY_INTERVAL_MILLIS = 500;
     private static final int RETRYING_EXECUTOR_POOL_SIZE = 5;
 
-    private final ExternalServiceClient pollingClient;
-    private final ExternalServiceClient syncClient;
+    private ExternalServiceClient pollingClient;
+    private ExternalServiceClient syncClient;
 
-    private final TransactionProcessor<TransactionResponseDto, UUID, TransactionContext> syncTransactionProcessor;
-    private final TransactionProcessor<TransactionResponseDto, UUID, TransactionContext> pollingTransactionProcessor;
+    private TransactionProcessor<TransactionResponseDto, UUID, TransactionContext> syncTransactionProcessor;
+    private TransactionProcessor<TransactionResponseDto, UUID, TransactionContext> pollingTransactionProcessor;
 
-    private final DeliveryTransactionsProcessorWritebackRepository writebackRepository;
-    private final DeliveryInfoRecordRepository deliveryInfoRecordRepository;
+    private DeliveryTransactionsProcessorWritebackRepository writebackRepository;
+    private DeliveryInfoRecordRepository deliveryInfoRecordRepository;
 
     private final List<StartDeliveryInfo> startDeliveryEvents = new ArrayList<>();
 
 
     @InjectEventLogger
     private EventLogger eventLogger;
-    private final EventBus eventBus;
+    private EventBus eventBus;
 
-    private final MetricCollector metricCollector;
+    private MetricCollector metricCollector;
 
     public DefaultDeliveryService(DeliveryTransactionsProcessorWritebackRepository writebackRepository,
                                   DeliveryInfoRecordRepository deliveryInfoRecordRepository,
