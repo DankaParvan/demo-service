@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service
 import java.lang.System.currentTimeMillis
 import java.util.*
 import java.util.concurrent.locks.ReentrantLock
+import javax.annotation.PostConstruct
 import kotlin.concurrent.withLock
 
 @Suppress("UnstableApiUsage")
@@ -41,6 +42,22 @@ class ItemServiceImpl(
     private lateinit var logger: EventLogger
     val lock = ReentrantLock(true)
 
+    @PostConstruct
+    fun createItems() {
+        for (i in 0 until 100_001) {
+            val newItem = ItemDTO(UUID.randomUUID(), getRandomString(7), getRandomString(15), 300, 1_000_000)
+            itemRepository.save(newItem.mapToEntityWithNullId())
+            logger.info(ItemServiceNotableEvents.I_CREATE_ITEM_REQUEST, newItem)
+        }
+    }
+
+    fun getRandomString(length: Int) : String {
+        val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
+        return (1..length)
+            .map { allowedChars.random() }
+            .joinToString("")
+    }
+    
 
     override fun listItems(): MutableList<ItemDTO> =
         itemRepository.findAll().map { it.mapToDTO() }.toMutableList()
