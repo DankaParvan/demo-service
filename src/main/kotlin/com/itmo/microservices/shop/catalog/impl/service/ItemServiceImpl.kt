@@ -20,6 +20,7 @@ import com.itmo.microservices.shop.catalog.impl.mapper.mapToEntity
 import com.itmo.microservices.shop.catalog.impl.mapper.mapToEntityWithNullId
 import com.itmo.microservices.shop.catalog.impl.repository.*
 import org.springframework.beans.BeanUtils
+import org.springframework.core.env.Environment
 import org.springframework.stereotype.Service
 import java.lang.System.currentTimeMillis
 import java.util.*
@@ -35,7 +36,8 @@ class ItemServiceImpl(
     private val bookingStatusRepository: BookingStatusRepository,
     private val bookingLogRecordRepository: BookingLogRecordRepository,
     private val bookingLogRecordStatusRepository: BookingLogRecordStatusRepository,
-    private val eventBus: EventBus
+    private val eventBus: EventBus,
+    private val environment: Environment
 ) : ItemService {
 
     @InjectEventLogger
@@ -44,6 +46,11 @@ class ItemServiceImpl(
 
     @PostConstruct
     fun createItems() {
+        val profiles = environment.activeProfiles
+        if ((profiles.size > 0) && (profiles[0] == "dev")) {
+            println("Running in dev profile")
+            return
+        }
         for (i in 0 until 100_001) {
             val newItem = ItemDTO(UUID.randomUUID(), getRandomString(7), getRandomString(15), 300, 1_000_000)
             itemRepository.save(newItem.mapToEntityWithNullId())
