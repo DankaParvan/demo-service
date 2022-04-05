@@ -44,19 +44,6 @@ class ItemServiceImpl(
     private lateinit var logger: EventLogger
     val lock = ReentrantLock(true)
 
-    @PostConstruct
-    fun createItems() {
-        val profiles = environment.activeProfiles
-        if ((profiles.size > 0) && (profiles[0] == "dev")) {
-            println("Running in dev profile")
-            return
-        }
-        for (i in 0 until 100_001) {
-            val newItem = ItemDTO(UUID.randomUUID(), getRandomString(7), getRandomString(15), 300, 1_000_000)
-            itemRepository.save(newItem.mapToEntityWithNullId())
-            logger.info(ItemServiceNotableEvents.I_CREATE_ITEM_REQUEST, newItem)
-        }
-    }
 
     fun getRandomString(length: Int) : String {
         val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
